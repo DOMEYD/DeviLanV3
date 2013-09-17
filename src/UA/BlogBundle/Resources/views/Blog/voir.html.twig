@@ -1,0 +1,14 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{article.titre}}{% endblock %}
+ 
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+        <h1 class="title">{{article.titre}}</h1>
+        <div class="corps">
+            {{article.contenu}}
+        </div>
+        <footer>Publié par {{article.auteur}}, le {{ article.date|date('d/m/Y') }}</footer>
+    </article>
+    {{ parent() }}
+{% endblock %}

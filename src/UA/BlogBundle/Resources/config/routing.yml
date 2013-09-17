@@ -1,0 +1,31 @@
+UAblog_voir:
+    path:     /article/{id}
+    defaults: { _controller: UABlogBundle:Blog:voir }
+    requirements:
+        id: \d*
+
+UAblog_ajouter:
+    path:     /admin/add
+    defaults: { _controller: UABlogBundle:Blog:add }
+
+UAblog_modifier:
+    path:     /admin/modif/{article}
+    defaults: { _controller: UABlogBundle:Blog:modif }
+    requirements:
+        id: \d*
+
+UAblog_supprimer:
+    path:     /admin/delete/{article}
+    defaults: { _controller: UABlogBundle:Blog:delete }
+    requirements:
+        id: \d*
+
+UAblog_accueil:
+    path:     /{page}
+    defaults: { _controller: UABlogBundle:Blog:index, page: 1 }
+    requirements:
+        id: \d*
+
+UAblog_default:
+    path:   /
+    defaults: { _controller: UABlogBundle:Blog:index, page: 1 }

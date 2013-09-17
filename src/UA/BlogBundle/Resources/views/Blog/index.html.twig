@@ -1,0 +1,25 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Index{% endblock %}
+ 
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+	{% if Articles == null %}
+		Aucun article à afficher !
+	{% else %}
+		{% for each in Articles %}
+		<div class="BlogArticle">
+			<h1 class="title"><a href="{{ path('UAblog_voir', {'id' : each.id }) }}">{{each.titre}}</a></h1>
+			<div class="corps">{{each.contenu}}</div>
+			<footer>Publié par {{each.auteur}}</footer>
+		{% endfor %}
+		</div>
+	{% endif %}
+	<ul class="pagination">
+		<li><a href="#">&laquo;</a></li>
+		<li><a href="#">1</a></li>
+		<li><a href="#">&raquo;</a></li>
+	</ul>
+	</article>
+	{{ parent() }}
+{% endblock %}

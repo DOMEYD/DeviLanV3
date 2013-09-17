@@ -1,0 +1,7 @@
+#Formulaire connexion
+login: "Nom d'utilisateur :"
+password: "Mot de passe :"
+keepLogged: "Rester connecté ?"
+
+#Administration
+add: "Ajouter"

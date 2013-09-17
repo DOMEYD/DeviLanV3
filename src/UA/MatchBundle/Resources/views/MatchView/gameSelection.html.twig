@@ -1,0 +1,23 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Sélection du jeux{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+    	<h2>{{ 'gameSelectionTitle'|trans }}</h2>
+		<div id="GamesGestion">
+			{% for game in games %}
+				<p class="game">
+					<img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"><br />
+					<span class="gameName">{{game.name}}</span>
+					<span class="controlGame">
+						<a href="{{ path('UAMatchBundle_ViewMatchforGame', {'id' : game.id}) }}" class="valide">
+							<span class="glyphicon glyphicon-eye-open"></span>
+						</a>
+					</span>
+				</p>
+			{% endfor %}
+		</div>	
+	</article>
+	{{ parent() }}
+{% endblock %}

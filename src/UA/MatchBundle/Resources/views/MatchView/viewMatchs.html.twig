@@ -1,0 +1,26 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Voir les matchs{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+    	{% set poolBefore = 0 %}
+		{% for match in Matchs %}
+			{% if match.TeamA.pool != poolBefore %}
+				{% if match.TeamA.pool != 1 %}</table>{% endif %}
+				<table class="matchPool">
+				<thead><tr><td colspan=4>Pool {{ match.TeamA.pool }}</td></tr></thead>
+				{% set poolBefore = match.TeamA.pool %}
+			{% endif %}
+	
+			<tr>
+				<td>{{ match.TeamA.name}}</td>
+				<td>{{ match.scoreA }}</td>
+				<td>{{ match.scoreB }}</td>
+				<td style="text-align: right;">{{ match.TeamB.name }}</td>
+			</tr>
+		{% endfor %}
+    	</table>
+	</article>
+	{{ parent() }}
+{% endblock %}

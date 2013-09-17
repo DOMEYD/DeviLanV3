@@ -1,0 +1,84 @@
+/* Match admin */
+a.PlayerDelete {
+	color: black;
+}
+a.PlayerDelete:hover {
+	color: red;
+	text-decoration: none;
+}
+#password {
+	padding: 5px;
+	background-color: #f1c40f;
+	color: #2c3e50;
+	margin: 5px auto;
+	border: 2px solid #d35400;
+	width:50%;
+	text-align: center;
+	font-weight: bold;
+}
+
+/* Gestion of the game */
+#GamesGestion {
+	border-top: 1px solid #bdc3c7;
+	padding-top: 3px;
+	margin-top: 3px;
+}
+#GamesGestion .game {
+	display: inline-block;
+	width: 19%;
+	margin: 0 0.5%;
+	border: 1px solid #95a5a6;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: center;
+	-webkit-box-shadow: inset -3px -3px 10px 1px #DDD;
+	box-shadow: inset -3px -3px 10px 1px #DDD;
+}
+#GamesGestion .game span.gameName {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+
+}
+#GamesGestion .game img {
+	width: 60%;
+}
+#GamesGestion .game span.controlGame {
+	display: inline-block;
+	width: 100%;
+	border-top: 1px solid #bdc3c7;
+}
+#GamesGestion .game .controlGame a {
+	color: #2c3e50;
+}
+#GamesGestion .game .controlGame a.delete:hover {
+	color: #e74c3c;
+	text-decoration: none;
+}
+#GamesGestion .game .controlGame a.valide:hover {
+	color: #2ecc71;
+	text-decoration: none;
+}
+a.PlayerAdd {
+	color: #2c3e50;
+}
+a.PlayerAdd:hover {
+	color: #2ecc71;
+	text-decoration: none;
+}
+
+/* GAME VIEW */
+.matchPool {
+	display: inline-block;
+	border: 1px solid #bdc3c7;
+	padding: 5px;
+	vertical-align: top;
+	width: 20%;
+}
+.matchPool thead {
+	text-align: center;
+	font-weight: bold;
+	font-size: 16px;
+	border-bottom: 1px solid #bdc3c7;
+}

@@ -1,0 +1,17 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Ajouter un article{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="UABlog_default">{{ 'home'|trans }}</a></li>
+			<li><a href="UAUser_admin">{{ 'admin'|trans }}</a></li>
+			<li class="active">{{ 'generate'|trans }}</li>
+		</ol>
+
+		<div class="alert alert-error">{{ Error|trans }}</div>
+		<a href="{{ path('UAUser_admin') }}" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>{{ 'AdminReturn'|trans }}</a>
+	</article>
+	{{ parent() }}
+{% endblock %}

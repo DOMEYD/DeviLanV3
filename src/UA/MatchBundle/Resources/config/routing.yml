@@ -1,0 +1,51 @@
+#view
+UAMatchBundle_ViewMatchforGame:
+    pattern: /matchs/{id}
+    defaults: { _controller:UAMatchBundle:View:ViewGame }
+
+UAMatchBundle_ViewGameSelect:
+    pattern: /matchs
+    defaults: { _controller: UAMatchBundle:View:index}
+
+#Generate
+UAMatchAdmin_Generate:
+    pattern: /admin/matchs/gen/e{etape}/g{gameID}
+    defaults: { _controller: UAMatchBundle:Admin:generate, etape: 0, gameID: null }
+
+#Gestion of Players
+UAMatchAdmin_PlayerAdd:
+    pattern: /admin/matchs/team/PlayerAdd/{id}
+    defaults: { _controller: UAMatchBundle:Admin:PlayerAdd }
+
+UAMatchAdmin_PlayerDelete:
+    pattern: /admin/matchs/team/PlayerDelete/{id}
+    defaults: { _controller: UAMatchBundle:Admin:PlayerDelete }
+
+#Gestion of Teams
+UAMatchAdmin_TeamValide:
+    pattern: /admin/matchs/team/v/{id}
+    defaults: { _controller: UAMatchBundle:Admin:teamValide }
+
+UAMatchAdmin_TeamDelete:
+    pattern: /admin/matchs/team/d/{id}
+    defaults: { _controller: UAMatchBundle:Admin:teamDelete }
+
+UAMatchAdmin_Team:
+    pattern: /admin/matchs/team/{id}
+    defaults: { _controller: UAMatchBundle:Admin:team, id: 1}
+
+#Gestion of Games
+UAMatchAdmin_Game:
+    pattern: /admin/matchs/game/{page}
+    defaults: { _controller: UAMatchBundle:Admin:game, page: 1}
+    requirements:
+        page: \d*
+
+UAMatchAdmin_GameDelete:
+    pattern: /admin/matchs/gameDelete/{gameId}
+    defaults: { _controller: UAMatchBundle:Admin:gamedelete}
+
+#Default
+UAMatch_Admin:
+    pattern:  /admin/matchs
+    defaults: { _controller: UAMatchBundle:Admin:index }

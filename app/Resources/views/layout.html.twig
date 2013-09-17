@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}Devilan{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('css/bootstrap-glyphicons.css') }}" type="text/css" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/design.css') }}" />
+        {% endblock %}
+        <!--[if lt IE 9]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+            {% block header %}
+                <img src="{{ asset('pictures/baniere2.png') }}" alt="banniere" />
+            {% endblock %}
+        </header>
+        <nav>
+            <ul>
+                <li><a href="{{ path('UAblog_default') }}"><span class="glyphicon glyphicon-home"></span></a></li>
+                <li><a href="{{ path('UAMatchBundle_ViewGameSelect') }}">MATCH</a></li>
+                <li><a href="">REGLEMENT</a></li>
+                <li><a href="">EQUIPES</a></li>
+                <li><a href="">F.A.Q.</a></li>
+            </ul>
+        </nav>
+        <section class="row">
+            {% block body %}
+            {% endblock %}
+
+            <aside class="col-lg-2">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                    Bonjour {{ app.user.username }},<br />
+                    <a href="{{ path('UAUser_admin') }}" class="btn btn-default btn-xs" style="width:100%; margin-bottom: 5px;">Administration</a><br> 
+                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-danger btn-xs" style="width:100%">Déconnexion</a>
+
+                {% else %}
+
+                    <form action="{{ path('fos_user_security_check') }}" method="post" style="text-align:center;">
+                        <label for="username">Login :</label>
+                        <input type="text" id="username" name="_username" placeholder="Nom d'utilisateur :" class="form-control" />
+
+                        <label for="password">Mot de passe :</label>
+                        <input type="password" id="password" name="_password" placeholder="Mot de passe :" class="form-control" />
+                        <br />
+                        <input type="submit" value="Connexion" class="btn btn-default btn-xs" />
+                        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default btn-xs">Inscription</a>
+                    </form>
+
+                {% endif %}
+            </aside>
+        </section>
+        <footer>
+            {{ 'footer'|trans }}
+        </footer>
+
+        {% block javascripts %}
+            {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+            <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+            <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Ajouter un article{% endblock %}
+ 
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'admin'|trans }}</a></li>
+			<li class="active">{{ 'add'|trans }}</li>
+		</ol>
+		<br />
+		<h2 style="text-align:center;">Ajout d'un article</h2>
+		<br />
+		{% if error %}
+			{% for each in error %}
+				<div  class="alert alert-danger">{{each|trans}}</div>
+			{% endfor %}
+		{% endif %}
+		<form method="POST" {{ form_enctype(form) }}>
+			{{ form_widget(form.titre, {'attr' : {'class' : 'form-control', 'placeholder' : 'Titre :'}}) }}<br />
+			{{ form_widget(form.contenu, {'attr' : {'class' : 'form-control', 'rows' : '5'}})}}<br />
+			{{ form_rest(form) }}
+			<input type="submit" class="btn btn-default"/>
+		</form>
+		<br />
+		<table class="table table-hover">
+			{% for each in articles %}
+				<tr>
+					<td>{{ each.titre }}</td>
+					<td>{{ each.auteur }}</td>
+					<td>
+						<span class="glyphicon glyphicon-edit"></span>
+					</td>
+					<td>
+						<a href="{{ path('UAblog_supprimer', { 'article' : each.id }) }}" class="ArticleDelete">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</article>
+	{{ parent() }}
+{% endblock %}

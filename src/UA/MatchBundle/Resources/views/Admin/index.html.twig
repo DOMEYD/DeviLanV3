@@ -1,0 +1,14 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Ajouter un article{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="#">{{ 'home'|trans }}</a></li>
+			<li><a href="#">{{ 'admin'|trans }}</a></li>
+			<li class="active">Data</li>
+		</ol>
+	</article>
+	{{ parent() }}
+{% endblock %}

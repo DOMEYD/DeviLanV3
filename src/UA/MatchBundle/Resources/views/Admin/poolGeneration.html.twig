@@ -1,0 +1,23 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Génération des matchs - Sélection du jeux{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'admin'|trans }}</a></li>
+			<li><a href="{{ path('UAMatchAdmin_Generate', {'etape': 0}) }}">{{ 'matchGen'|trans }}</a></li>
+			<li class="active">{{ 'poolGeneration'|trans }}</li>
+		</ol>	
+
+		<div class="alert alert-warning">{{ 'nbrTeamAdvisable'|trans({'%n%' : nbrTeams, '%x%': nbrPoolAdvisable, '%team%': teamName.name })|raw}}</div>
+
+		<form method="POST" action="{{ path('UAMatchAdmin_Generate', {'etape': 2, 'gameID': teamName.id }) }}" class="form-inline" role="form">
+			<input type="number" name="nbrPool" class="form-control" style="width:auto;" />
+			<button type="submit" class="btn btn-default">{{ 'generate'|trans }} <span class="glyphicon glyphicon-refresh"></span></button>
+		</form>
+		<br />
+	</article>
+	{{ parent() }}
+{% endblock %}

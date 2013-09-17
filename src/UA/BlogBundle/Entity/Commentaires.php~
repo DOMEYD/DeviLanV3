@@ -1,0 +1,55 @@
+<?php
+
+namespace UA\BlogBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Commentaires
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="UA\BlogBundle\Entity\CommentairesRepository")
+ */
+class Commentaires
+{
+
+	/**
+	* @ORM\ManyToOne(targetEntity="Sdz\BlogBundle\Entity\Article")
+	* @ORM\JoinColumn(nullable=false)
+	*/
+	private $article;
+
+	/**
+	* @var integer $id
+	*
+	* @ORM\Column(name="id", type="integer")
+	* @ORM\Id
+	* @ORM\GeneratedValue(strategy="AUTO")
+	*/
+	private $id;
+
+	/**
+	* @var string $auteur
+	* 
+	* @ORM\Column(name="auteur", type="string", length=255)
+	*/
+	private $auteur;
+
+	/**
+	* @var text $contenu
+	* 
+	* @ORM\Column(name="contenu", type="text")
+	*/
+	private $contenu;
+
+	/**
+	* @var datetime $date
+	* 
+	* @ORM\Column(name="date", type="datetime")
+	*/
+	private $date;
+
+	public function __construct() {
+		$this->date = new \Datetime();
+	}
+}

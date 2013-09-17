@@ -1,0 +1,11 @@
+parameters:
+#    ua_match.example.class: UA\MatchBundle\Example
+    ua_match.MatchGenerator.DevilanDefault: UA\MatchGenerator\DeviLanDefault
+
+services:
+#    ua_match.example:
+#        class: %ua_match.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    ua_match.MatchGenerator:
+        class: %ua_match.MatchGenerator.DeviLanDefault%

@@ -1,0 +1,45 @@
+# Position / path
+home : "Acceuil"
+admin : "Administration"
+generate : "Génération"
+team : "Equipes"
+game: "Jeux"
+playerAdd: "Ajout de joueur"
+matchGen: "Génération des matchs"
+gameSelection: "Sélection du jeu"
+poolGeneration: "Choix du nombre de pools"
+
+#Admin titles
+gameTitle: "Ajouter un jeux"
+teamTitle: "Créer une équipe"
+playerAdd: "Ajout de joueur"
+gameSelectionTitle: "Veuillez choisir un jeu :"
+
+#Admin forms field
+abbr: "Abbr :"
+title: "Titre :"
+nbrPlayerRequired: "Nombre de joueur necessaires :"
+generator: "Alghorythme de génération :"
+teamName: "Nom de l'équipe :"
+playerName: "Nom du joueur :"
+cancel: "Annuler"
+AdminReturn: "Retourner à l'Administration"
+
+#Admin messages
+BlankPicture: "Une image doit être spécifiée !"
+gameSuccess: "Le jeux a bien été créé !"
+nbrPlayerComplete: "Le nombre de joueur requis est atteind !"
+nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."
+GenerateSuccessful: "<div class=\"alert alert-success\">La génération des matchs pour le jeu <strong>%game%</strong> s'est effectué avec succès !</div>"
+NotExistingStep: "L'étape spécifiée en paramètre n'existe pas !"
+MatchsAlreadyGenerate: "Les matchs ont déjà été générés"
+UnexpectedError: "Une erreur innatendu s'est produite !"
+
+#Admin status
+yes: 'oui'
+no: 'non'
+PlayerAdd: 'Compléter'
+valide: 'Team validé'
+teamName: "Nom de l'équipe :"
+gameName: "Jeux"
+action: "Actions"

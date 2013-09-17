@@ -1,0 +1,29 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Génération des matchs - Sélection du jeux{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'admin'|trans }}</a></li>
+			<li><a href="{{ path('UAMatchAdmin_Generate', {'etape': 0}) }}">{{ 'matchGen'|trans }}</a></li>
+			<li class="active">{{ 'gameSelection'|trans }}</li>
+		</ol>
+
+		<div id="GamesGestion">
+			{% for game in games %}
+				<p class="game">
+					<img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"><br />
+					<span class="gameName">{{game.name}}</span>
+					<span class="controlGame">
+						<a href="{{ path('UAMatchAdmin_Generate', {'etape' : 1, 'gameID' : game.id}) }}" class="valide">
+							<span class="glyphicon glyphicon-ok-sign"></span>
+						</a>
+					</span>
+				</p>
+			{% endfor %}
+		</div>	
+	</article>
+	{{ parent() }}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'teamTitle'|trans }}{% endblock %}
+
+{% block body %}
+    <article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'admin'|trans }}</a></li>
+			<li class="active">{{ 'team'|trans }}</li>
+		</ol>
+
+		<h2 style="text-align:center;">{{ 'teamTitle'|trans }}</h2>
+
+		{% if error %}
+			{% for each in error %}
+				<div  class="alert alert-danger">{{each|trans}}</div>
+			{% endfor %}
+		{% endif %}
+
+		<form method="POST" {{ form_enctype(form) }}>
+			{{ form_widget(form.name, {'attr' : {'class' : 'form-control', 'placeholder' : 'teamName'|trans,  'autofocus' : 'autofocus'}}) }}<br />
+			{{ form_widget(form.game, {'attr' : {'class' : 'form-control'}})}}<br />
+			{{ form_rest(form) }}
+		    <input type="submit" class="btn btn-default pull-right"/>
+		</form>
+		<div class="clearfix"></div><br />
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>{{ 'teamName'|trans }}</th>
+					<th>{{ 'gameName'|trans }}</th>
+					<th colspan="2" style="text-align:center;">{{ 'action'|trans }}</th>
+				</tr>
+			</thead>
+		{% for team in Teams %}
+			<tr>
+				<td>{{team.name}}</td>
+				<td>{{team.game.name}}</td>
+				<td style="text-align:center;">
+					{% if team.present == 'True' %}
+						<span class="glyphicon glyphicon-ok" style="color: #2ecc71;"></span>
+						<span style="color: #2ecc71;">{{ 'valide'|trans|upper }}</a>
+					{% else %}
+						<a href="{{ path('UAMatchAdmin_PlayerAdd', {id: team.id}) }}" class="PlayerAdd">
+							<span class="glyphicon glyphicon-plus-sign"></span>
+							<span class="masque">{{ 'PlayerAdd'|trans }}</span>
+						</a>
+					{% endif %}
+				</td>
+				<td><a href="{{ path('UAMatchAdmin_TeamDelete', {id: team.id}) }}" class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+			</tr>
+		{% endfor %}
+			<tr>
+				<td>
+					{% if page > 1 %}
+					<a href="{{ path('UAMatchAdmin_Team', {id: page-1})}}">&#171;</a>
+					{% endif %}
+				</td>
+				<td colspan="2"></td>
+				<td style="text-align: right;"><a href="{{ path('UAMatchAdmin_Team', {id: page+1})}}">&#187;</a></td>
+			</tr>
+		</table>
+	</article>
+	{{ parent() }}
+{% endblock %}

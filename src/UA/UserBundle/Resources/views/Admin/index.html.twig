@@ -1,0 +1,40 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Administration{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}" />
+	{{ parent() }}
+{% endblock %}
+ 
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		<div class="admin">
+			<h3>Blog</h3>
+			<ul>
+				<li style="background-color:#e74c3c;"><a href="{{ path('UAblog_ajouter') }}">
+					<img src="{{ asset('pictures/admin/ajouter.png') }}"><br />
+					Ajouter
+				</a></li>
+			</ul>
+		</div>
+		<div class="admin">
+			<h3>Matchs</h3>
+			<ul>
+				<li style="background-color:#d35400;"><a href="{{ path('UAMatchAdmin_Game') }}">
+					<img src="{{ asset('pictures/admin/game.png') }}"><br />
+					Jeux
+				</a></li>
+				<li style="background-color:#27ae60;"><a href="{{ path('UAMatchAdmin_Team') }}">
+					<img src="{{ asset('pictures/admin/team.png') }}"><br />
+					Team
+				</a></li>
+				<li style="background-color: #9b59b6;"><a href="{{ path('UAMatchAdmin_Generate') }}">
+					<img src="{{ asset('pictures/admin/generate.png') }}"><br />
+					Génération des matchs
+				</a></li>
+			</ul>
+		</div>
+	</article>
+    {{ parent() }}
+{% endblock %}

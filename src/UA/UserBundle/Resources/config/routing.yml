@@ -1,0 +1,3 @@
+UAUser_admin:
+    path:     /admin
+    defaults: { _controller: UAUserBundle:Admin:index }
