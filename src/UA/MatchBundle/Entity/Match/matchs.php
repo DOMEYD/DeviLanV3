@@ -29,7 +29,7 @@ class matchs
 
     /**
      * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\Match\team")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $teamB;
 

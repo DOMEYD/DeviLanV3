@@ -82,3 +82,8 @@ a.PlayerAdd:hover {
 	font-size: 16px;
 	border-bottom: 1px solid #bdc3c7;
 }
+
+/* Referee */
+#ScoreForm {
+	text-align: center;
+}

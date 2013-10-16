@@ -13,11 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Commentaires
 {
 
-	/**
-	* @ORM\ManyToOne(targetEntity="UA\BlogBundle\Entity\Articles")
-	* @ORM\JoinColumn(nullable=false)
-	*/
-	private $article;
 
 	/**
 	* @var integer $id
@@ -28,19 +23,25 @@ class Commentaires
 	*/
 	private $id;
 
+    /**
+    * @ORM\ManyToOne(targetEntity="UA\BlogBundle\Entity\Articles", inversedBy="comments", cascade={"persist"})
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $article;
+
 	/**
 	* @var string $auteur
 	* 
 	* @ORM\Column(name="auteur", type="string", length=255)
 	*/
-	private $auteur;
+	private $author;
 
 	/**
 	* @var text $contenu
 	* 
 	* @ORM\Column(name="contenu", type="text")
 	*/
-	private $contenu;
+	private $content;
 
 	/**
 	* @var datetime $date
@@ -153,5 +154,51 @@ class Commentaires
     public function getArticle()
     {
         return $this->article;
+    }
+
+    /**
+     * Set author
+     *
+     * @param string $author
+     * @return Commentaires
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return string 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return Commentaires
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

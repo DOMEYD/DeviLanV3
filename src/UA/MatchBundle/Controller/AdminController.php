@@ -84,6 +84,8 @@ class AdminController extends Controller
 			return $this->render('UAMatchBundle:Admin:generation.html.twig', array(	'message' => 'GenerateSuccessful', 
 																					'game' => $Teams[0]->getGame()));
 		}
+
+		/* Gestion of errors */
 		if($etape > 2) {
 			$error = 'NotExistingStep';
 		}
@@ -93,17 +95,110 @@ class AdminController extends Controller
 		else {
 			$error = 'UnexpectedError';
 		}
-		return $this->render('UAMatchBundle:Admin:generateError.html.twig', array('Error' => $error));
+		return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => $error));
+	}
+
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
+	public function refereeAction($MatchID) {
+		$em = $this->getDoctrine()->getManager();
+		$Match = $em->getRepository('UAMatchBundle:Match\matchs')->find($MatchID);
+
+		if(count($Match) == 1){ //Test of Match ID
+
+			if($this->getRequest()->getMethod() == 'POST') {
+				/* Update the scores */
+				$Match->setScoreA($this->getRequest()->request->get('sc1'));
+				$Match->setScoreB($this->getRequest()->request->get('sc2'));
+				$em->persist($Match);
+				$em->flush();
+
+				/* Calcul step */
+				$Step = (int) $Match->getStep();
+				$braket = substr($Match->getStep(), -1);
+
+				/*
+				 * Generate the rest of the tree according to the step
+				 */
+				if($Match->getStep() == 'Pool') {
+					$MatchRemaining = $em->getRepository('UAMatchBundle:Match\matchs')->findBy(array('game' => $Match->getGame(), 'scoreA' => null, 'scoreB' => null));
+					
+					/*
+					 * End of pool's matchs : Generate tree of match
+					 */
+					if(count($MatchRemaining) == 0) {
+						/* Calculate number of Elite team and number of turn */
+						$nbrTeams = count($em->getRepository('UAMatchBundle:Match\team')->findBy(array('game' => $Match->getGame()->getId(), 'present' => true)));
+						$nbrTeamAllow = pow(2, ceil(log($nbrTeams) / log(2))-1);
+						$NbrTurn = ceil(log($nbrTeamAllow) / log(2));
+
+						/* Calcul scores of teams */
+						$MatchScore = $em->getRepository('UAMatchBundle:Match\matchs')->findAll();
+						$tableScore = array();
+						foreach ($MatchScore as $match) {
+							/* Define who is the winner and who is the loser*/
+							$match->getScoreA() > $match->getScoreB() ? $eqW = $match->getTeamA() : $eqW = $match->getTeamB();
+							$match->getScoreA() > $match->getScoreB() ? $eqL = $match->getTeamB() : $eqL = $match->getTeamA();
+							
+							$teamName = $eqW->getName();
+							$keyTable = FALSE;
+							foreach ($tableScore as $key => $value) {
+								if($value[0] == $teamName){
+									$keyTable = $key;
+								}
+							}
+							
+							if($keyTable == FALSE) {
+								$tableScore[] = array($teamName, '$eqW', 1);
+							}
+							else {
+								$tableScore[$keyTable][2] += 1;
+							}
+						}
+						print_r($tableScore);
+						return ;
+					}
+				}
+				elseif($Step != 2) {
+					$ContinuationMatch = $em->getRepository('UAMatchBundle:Match\matchs')->findOneBy(array('game' => $Match->getGame(), 'scoreB' => null, 'step' => ($Step/2).$braket));
+					$sc1 > $sc2 ? $eqW = $Match->getTeamA() : $eqW = $Match->getTeamB();
+					if(count($ContinuationMatch) > 0) {
+						$ContinuationMatch->setTeamB($eqW);
+					} else {
+						$ContinuationMatch = new Matchs();
+						$ContinuationMatch->setGame($Match->getGame());
+						$ContinuationMatch->setTeamA($eqW);
+						$ContinuationMatch->setStep(($Step/2) . $braket);
+						$em->persist($ContinuationMatch);
+						$em->flush();
+					}
+				}
+				elseif($Step == 2) {
+					//FINAL
+				}
+				else {
+					//WINNER IS ... !
+				}
+				return $this->redirect($this->generateUrl('UAMatchBundle_ViewMatchforGame', array('id' => $Match->getGame()->getId())));
+			}
+			else {
+				return $this->render('UAMatchBundle:Admin:ArbitrageForm.html.twig', array('Match' => $Match));
+			}
+		}
+		else {
+			$error = 'ArbitrageMatchNotFound';
+			return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => $error));
+		}
 	}
 
 	public function playeraddAction($id) {
 		$Player = new Players();
-		$formError = '';
 		$form = $this->createForm(new PlayersType, $Player);
 
 		//Recovery entity team
 		$em = $this->getDoctrine()->getManager();
-		$team = $em->getRepository('UAMatchBundle:Match\team')->find($id);
+		$team = $em->find('UAMatchBundle:Match\team', $id);
 
 		//Submit form
 		if($this->getRequest()->getMethod() == 'POST') {
@@ -118,8 +213,7 @@ class AdminController extends Controller
 				$em->flush();
 
 				//Empty form
-				$Player = null;
-				$form = $this->createForm(new PlayersType, $Player);
+				$form = $this->createForm(new PlayersType);
 				
 				//Recovery of player from the team
 				$players = $em->getRepository('UAMatchBundle:Match\Players')->findByTeam($team);
@@ -127,14 +221,13 @@ class AdminController extends Controller
 				return $this->render('UAMatchBundle:Admin:PlayerAdd.html.twig', array('teamInfo' => $team, 'Players' => $players, 'form' => $form->createView(), 'error' => $formError));
 	
 			}
-			else {
-				$formError = $this->get('validator')->validate($newTeam);
-			}
 		}
 		//Recovery of player from the team
 		$players = $em->getRepository('UAMatchBundle:Match\Players')->findByTeam($team);
 
-		return $this->render('UAMatchBundle:Admin:PlayerAdd.html.twig', array('teamInfo' => $team, 'Players' => $players, 'form' => $form->createView(), 'error' => $formError));
+		return $this->render('UAMatchBundle:Admin:team.PlayerAdd.html.twig', array(	'teamInfo' => $team, 
+																					'Players' => $players, 
+																					'form' => $form->createView()));
 	}
 
 	public function playerdeleteAction($id) {
@@ -153,10 +246,9 @@ class AdminController extends Controller
 		return $this->redirect($this->generateUrl('UAMatchAdmin_PlayerAdd', array('id' => $idTeam)));
 	}
 
-	public function teamAction($id) {
+	public function teamAction($page) {
 		//initialize
 		$newTeam = new team();
-		$formError = '';
 		$form = $this->createForm(new teamType, $newTeam);
 		$em = $this->getDoctrine()->getManager();
 
@@ -175,18 +267,13 @@ class AdminController extends Controller
 				//Redirect to the AddPlayer forms
 				return $this->redirect( $this->generateUrl('UAMatchAdmin_PlayerAdd', array('id' => $newTeam->getId())) );
 			}
-			else {
-				$formError = $this->get('validator')->validate($newTeam);
-			}
 		}
 
-		$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array(), array('id' => 'DESC'), 5, ($id-1)*5);
+		$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array(), array('id' => 'DESC'), 5, ($page-1)*5);
 
-		return $this->render(	'UAMatchBundle:Admin:team.html.twig', 
-								array(	'form' => $form->createView(), 
-										'error' => $formError,
-										'Teams' => $Teams,
-										'page' => $id));
+		return $this->render(	'UAMatchBundle:Admin:team.html.twig', array('form' => $form->createView(), 
+																			'Teams' => $Teams,
+																			'page' => $page));
 	}
 
 	public function teamvalideAction($id) {
@@ -217,10 +304,10 @@ class AdminController extends Controller
 
 	public function gameAction($page) {
 		//Initialize
+		$success = false;
 		$newGame = new game();
-		$formError = ''; $success = false;
-		$form = $this->createForm(new gameType, $newGame);
 		$em = $this->getDoctrine()->getManager();
+		$form = $this->createForm(new gameType, $newGame);
 
 		//Save data
 		if ($this->getRequest()->getMethod() == 'POST') {
@@ -234,12 +321,8 @@ class AdminController extends Controller
 				$em->flush();
 
 				//Create a empty form to add an other game
-				$newGame = null;
-				$form = $this->createForm(new gameType, $newGame);
+				$form = $this->createForm(new gameType);
 				$success = true;
-			}
-			else {
-				$formError = $this->get('validator')->validate($newGame);
 			}
 		}
 
@@ -247,14 +330,20 @@ class AdminController extends Controller
 		$games = $em->getRepository('UAMatchBundle:game')->findBy(array(), array('id' => 'ASC'), 10, ($page-1)*10);
 
 
-		//Display the form (with errors if exists)
-		return $this->render('UAMatchBundle:Admin:game.html.twig', array('games' => $games, 'form' => $form->createView(), 'error' => $formError, 'success' => $success));
+		//Display the form
+		return $this->render('UAMatchBundle:Admin:game.html.twig', array(	'games' => $games, 
+																			'form' => $form->createView(), 
+																			'success' => $success));
 	}
 
 	public function gamedeleteAction($gameId) {
 		//Recovery entity Players
 		$em = $this->getDoctrine()->getManager();
 		$game = $em->getRepository('UAMatchBundle:game')->find($gameId);
+
+		if(!$game) {
+			throw new createNotFoundException('This game doesn\'t exist !');
+		}
 
 		//Delete it
 		$em->remove($game);
@@ -263,4 +352,5 @@ class AdminController extends Controller
 		//redirect to playerAdd
 		return $this->redirect($this->generateUrl('UAMatchAdmin_Game'));
 	}
+
 }

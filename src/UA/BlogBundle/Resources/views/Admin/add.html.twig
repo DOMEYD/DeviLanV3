@@ -1,0 +1,53 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{'admin.article.add.title'|trans}}{% endblock %}
+ 
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+			{% if articles is not null %}
+				<li class="active">{{ 'breadcrumb.add'|trans }}</li>
+			{% else %}
+				<li class="active">{{ 'breadcrumb.modify'|trans }}</li>
+			{% endif %}
+		</ol>
+		<h2 class="text-center">{{articles ? 'admin.article.add.title'|trans : 'admin.article.modif.title'|trans}}</h2>
+		<br>
+		<form method="POST" {{ form_enctype(form) }} novalidate>
+			{{ form_widget(form.title, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.article.add.input.title'}}) }}
+			{{ form_errors(form.title) }}
+			<br>
+			{{ form_widget(form.content, {'attr' : {'class' : 'form-control', 'rows' : '5', 'placeholder' : 'admin.article.add.input.content'}})}}
+			{{ form_errors(form.content) }}
+			<br>
+			{{ form_rest(form) }}
+			<input type="submit" class="btn btn-default"/>
+		</form>
+		<br>
+		<table class="table table-hover">
+			{% for article in articles if articles %}
+				<tr>
+					<td>
+						<a href="{{path('UAblog_voir', {'slug' : article.slug})}}">
+							{{ article.title }}
+						</a>
+					</td>
+					<td>{{ article.author }}</td>
+					<td>
+						<a href="{{ path('UAblog_modifier', { 'article' : article.id }) }}" class="ArticleModif">
+							<span class="glyphicon glyphicon-edit"></span>
+						</a>
+					</td>
+					<td>
+						<a href="{{ path('UAblog_supprimer', { 'article' : article.id }) }}" class="ArticleDelete">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</article>
+	{{ parent() }}
+{% endblock %}

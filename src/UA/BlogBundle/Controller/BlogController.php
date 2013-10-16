@@ -3,105 +3,127 @@ namespace UA\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+/* articles */
 use UA\BlogBundle\Entity\Articles;
 use UA\BlogBundle\Form\ArticlesType;
+/* commentaires */
+use UA\BlogBundle\Entity\Commentaires;
+use UA\BlogBundle\Form\CommentairesType;
+
 
 class BlogController extends Controller {
 	
+	/*
+	 * PUBLIC
+	 */
 	public function indexAction($page) {
-		//Gerer si la page peut exister 
-		if( $page < 1 ) {
-			//Generation d'une erreur dans le cas contraire
-			throw $this->createNotFoundException('Page inexistante (page = '.$page.')');
-		}
-
-		//Recuperation du EntityManager de Doctrine
+		//init
 		$em = $this->getDoctrine()->getManager();
 
-		//Recuperation des articles
-		$listeArticles = $em->getRepository('UABlogBundle:Articles')->findBy(array(), array('id' => 'DESC'));
+		$Articles = $em->getRepository('UABlogBundle:Articles')->findBy(array(), array('id' => 'DESC'));
+		$nbrArticles = $em->getRepository('UABlogBundle:Articles')->getCount();
 
-		//Rendu de la page
-		return $this->render('UABlogBundle:Blog:index.html.twig', array('page' => $page, 'Articles' => $listeArticles));
+		return $this->render('UABlogBundle:Blog:index.html.twig', array('pageActive' => $page, 
+																		'Articles' => $Articles,
+																		'nbrPage' => ceil($nbrArticles/10)
+																		));
 	}
 
-	public function voirAction(Articles $Article) {
+	public function voirAction($slug) {
+		//init
 		$em = $this->getDoctrine()->getManager();
-		//$Article = $em->find('UABlogBundle:Articles', $id);
+		$newComs = new Commentaires();
+		$form = $this->createForm(new CommentairesType, $newComs);
+		$Article = $em->getRepository('UABlogBundle:Articles')->findOneBySlug($slug);
 
-		if($Article === null) {
-			throw $this->createNotFoundException('L\'article '. $id .' n\'a pas été trouvé !');
+		//handling of new comment
+		$request = $this->getRequest();
+		if($request->getMethod() == 'POST') {
+			$form->bind($request);
+			if($form->isValid()) {
+				$newComs->setAuthor($this->getUser());
+				$Article->addComments($newComs);
+				$em->persist($Article);
+				$em->flush();
+
+				$newComs = new Commentaires();
+				$form = $this->createForm(new CommentairesType, $newComs);
+			}
 		}
 
-		$listeCom = $em->getRepository('UABlogBundle:Commentaires')->findAll();
-		return $this->render('UABlogBundle:Blog:voir.html.twig', array('article'  => $Article, 'comment' => $listeCom));
+
+		return $this->render('UABlogBundle:Blog:voir.html.twig', array(	'article'  => $Article,
+																		'form' => $form->createView()));
 	}
 
+	/*
+	 * ADMIN
+	 */
+	/**
+	 * @Secure(roles="ROLE_BLOGGER")
+	 */
 	public function addAction() {
+		//init
+		$em = $this->getDoctrine()->getManager();
 		$AddArticle = new Articles;
-		$AddArticle->setAuteur($this->getUser());
-		$formError = '';
 		$form = $this->createForm(new ArticlesType, $AddArticle);
 
 		if ($this->getRequest()->getMethod() == 'POST') {
 			$form->bind($this->getRequest());
 
 			if ($form->isValid()) {
-				//Enregistrement
-				$em = $this->getDoctrine()->getManager();
+				$AddArticle->setAuthor($this->getUser());
 				$em->persist($AddArticle);
 				$em->flush();
 
-				//on redirige vers l'Article
-				return $this->redirect( $this->generateUrl('UAblog_voir', array('id' => $AddArticle->getId())) );
-			}
-			else {
-				$formError = $this->get('validator')->validate($AddArticle);
+				//redirect to the posted article
+				return $this->redirect( $this->generateUrl('UAblog_voir', array('slug' => $AddArticle->getSlug())) );
 			}
 		}
 
-		//Recuperation des 5 derniers Articles
-		$em = $this->getDoctrine()->getManager();
+		//recovery last 5 articles
 		$Articles = $em->getRepository('UABlogBundle:Articles')->findBy(array(), array('id' => 'DESC'), 5);
 
-		//Rendu de la page si aucun formulaire n'a ete soumis
-		return $this->render('UABlogBundle:Blog:add.html.twig', array('form' => $form->createView(), 'articles' => $Articles, 'error' => $formError));
+		return $this->render('UABlogBundle:Admin:add.html.twig', array(	'form' => $form->createView(), 
+																		'articles' => $Articles));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_BLOGGER")
+	 */
 	public function modifAction($article) {
 		$em = $this->getDoctrine()->getManager();
 		$modifArticle = $em->find('UABlogBundle:Articles', $article);
-		$modifArticle->setAuteur('Moustako');
 		$form = $this->createForm(new ArticlesType, $modifArticle);
 
 		if ($this->getRequest()->getMethod() == 'POST') {
 			$form->bind($this->getRequest());
 
 			if ($form->isValid()) {
-				//On enregistre
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($AddArticle);
+				$em->persist($modifArticle);
 				$em->flush();
 
-				//on redirige vers l'Article
-				return $this->redirect( $this->generateUrl('UAblog_voir', array('id' => $AddArticle->getId())) );
+				//redirect to article
+				return $this->redirect( $this->generateUrl('UAblog_voir', array('slug' => $modifArticle->getSlug())) );
 			}
-			/*else {
-				return new Response('ERREUR !!!');
-			}*/
 		}
 
-		//Recuperation des 5 derniers Articles
-		$em = $this->getDoctrine()->getManager();
-		$Articles = $em->getRepository('UABlogBundle:Articles')->findAll();
-
 		//Rendu de la page si aucun formulaire n'a ete soumis
-		return $this->render('UABlogBundle:Blog:add.html.twig', array('form' => $form->createView(), 'articles' => $Articles));
+		return $this->render('UABlogBundle:Admin:add.html.twig', array(	'form' => $form->createView(),
+																		'articles' => null));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_BLOGGER")
+	 */
 	public function deleteAction($article) {
 		$em = $this->getDoctrine()->getManager();
 		$ArticleDeleting = $em->find('UABlogBundle:Articles', $article);
+
+		if(!$ArticleDeleting) {
+			throw new createNotFoundException('article.NotFound.delete');
+		}
 
 		//Creation d'un formulaire vide permettant la generation du token 
 		$form = $this->createFormBuilder()->getForm();
@@ -115,9 +137,9 @@ class BlogController extends Controller {
 				$em->flush();
 
 				//on redirige vers l'acceuil
-				return $this->redirect($this->generateUrl('UAblog_default'));
+				return $this->redirect($this->generateUrl('UAblog_ajouter'));
 			}
 		}
-		return $this->render('UABlogBundle:Blog:delete.html.twig', array('article' => $ArticleDeleting, 'form' => $form->createView()));
+		return $this->render('UABlogBundle:Admin:delete.html.twig', array('article' => $ArticleDeleting, 'form' => $form->createView()));
 	}
 }

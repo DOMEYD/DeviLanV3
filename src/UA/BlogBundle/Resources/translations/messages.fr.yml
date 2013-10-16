@@ -1,7 +1,47 @@
-#Formulaire connexion
-login: "Nom d'utilisateur :"
-password: "Mot de passe :"
-keepLogged: "Rester connecté ?"
-
 #Administration
-add: "Ajouter"
+admin:
+    article:
+        add:
+            title: "Ajouter un article"
+            input:
+                title: "Titre :"
+                content: "Tapez ici le contenu de votre article ..."
+        modif:
+            title: "Modifier l'article"
+        delete:
+            title: "Supprimer un article"
+            input:
+                back: "Revenir en arrière"
+                delete: "Supprimer"
+            message: "Etes-vous certain de vouloir supprimer l'article \"%titre%\" ?"
+
+    error:
+        article:
+            add: 
+                contentNotBlank: "Le contenu de l'article ne peut pas être vide !"
+
+breadcrumb:
+    home: "Accueil"
+    admin: "Administration"
+    add: "Ajouter"
+    modify: "Modifier"
+    delete: "Supprimer"
+
+#Article
+article:
+    published: "Publié par"
+    at: "le"
+
+commentaire:
+    publisher: "Vous posterez sous le pseudo"
+    connectRequired: "Vous devez être connecté pour poster un commentaire !"
+    noCommentaire: "Aucun commentaire..."
+    hasPublished: "a publié:"
+    input:
+        comment: "Commenter..."
+
+#error
+error:
+    warning: "Attention !"
+    articleNotFound: "Cet article n'existe pas..."
+    noArticle: "Aucun article à afficher !"

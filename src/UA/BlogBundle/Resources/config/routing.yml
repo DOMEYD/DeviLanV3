@@ -1,9 +1,4 @@
-UAblog_voir:
-    path:     /article/{id}
-    defaults: { _controller: UABlogBundle:Blog:voir }
-    requirements:
-        id: \d*
-
+#ADMIN
 UAblog_ajouter:
     path:     /admin/add
     defaults: { _controller: UABlogBundle:Blog:add }
@@ -19,6 +14,11 @@ UAblog_supprimer:
     defaults: { _controller: UABlogBundle:Blog:delete }
     requirements:
         id: \d*
+
+#VIEW
+UAblog_voir:
+    path:     /view/{slug}
+    defaults: { _controller: UABlogBundle:Blog:voir }
 
 UAblog_accueil:
     path:     /{page}

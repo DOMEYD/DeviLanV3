@@ -2,8 +2,9 @@
 
 namespace UA\BlogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM; //Objet mapping doctrine
-use Symfony\Component\Validator\Constraints as Assert; //Library de validation
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; 
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Articles
@@ -34,32 +35,44 @@ class Articles
 	 * @var string
 	 *
 	 * @ORM\Column(name="titre", type="string", length=255)
+     * @Assert\NotBlank(message="Le titre ne doit pas être vide !")
 	 * @Assert\Length(
-     *      min = "10",
+     *      min = "5",
      *		minMessage="Le titre doit comporter au moins {{ limit }} caractères !")
 	 */
-	private $titre;
+	private $title;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="auteur", type="string", length=255)
-	 * @Assert\Length(
-     *      min = "2",
-     *		minMessage="L'auteur n'est pas valide ! (mini : {{ limit }} caractères !")
+	 * @ORM\ManyToOne(targetEntity="UA\UserBundle\Entity\User")
 	 */
-	private $auteur;
+	private $author;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(name="contenu", type="text")
-	 * @Assert\NotBlank()
+	 * @Assert\NotBlank(message="Le contenu de l'article ne peut être vide !")
 	 */
-	private $contenu;
+	private $content;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UA\BlogBundle\Entity\Commentaires", mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $comments;
 
     public function __construct() {
         $this->date = new \DateTime();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -97,71 +110,127 @@ class Articles
     }
 
     /**
-     * Set titre
+     * Set title
      *
-     * @param string $titre
+     * @param string $title
      * @return Articles
      */
-    public function setTitre($titre)
+    public function setTitle($title)
     {
-        $this->titre = $titre;
+        $this->title = $title;
     
         return $this;
     }
 
     /**
-     * Get titre
+     * Get title
      *
      * @return string 
      */
-    public function getTitre()
+    public function getTitle()
     {
-        return $this->titre;
+        return $this->title;
     }
 
     /**
-     * Set auteur
+     * Set content
      *
-     * @param string $auteur
+     * @param string $content
      * @return Articles
      */
-    public function setAuteur($auteur)
+    public function setContent($content)
     {
-        $this->auteur = $auteur;
+        $this->content = $content;
     
         return $this;
     }
 
     /**
-     * Get auteur
+     * Get content
      *
      * @return string 
      */
-    public function getAuteur()
+    public function getContent()
     {
-        return $this->auteur;
+        return $this->content;
     }
 
     /**
-     * Set contenu
+     * Set slug
      *
-     * @param string $contenu
+     * @param string $slug
      * @return Articles
      */
-    public function setContenu($contenu)
+    public function setSlug($slug)
     {
-        $this->contenu = $contenu;
+        $this->slug = $slug;
     
         return $this;
     }
 
     /**
-     * Get contenu
+     * Get slug
      *
      * @return string 
      */
-    public function getContenu()
+    public function getSlug()
     {
-        return $this->contenu;
+        return $this->slug;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \UA\UserBundle\Entity\User $author
+     * @return Articles
+     */
+    public function setAuthor(\UA\UserBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+    
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \UA\UserBundle\Entity\User 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \UA\BlogBundle\Entity\Commentaires $comments
+     * @return Articles
+     */
+    public function addComments(\UA\BlogBundle\Entity\Commentaires $comments)
+    {
+        $this->comments[] = $comments;
+        $comments->setArticle($this);
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \UA\BlogBundle\Entity\Commentaires $comments
+     */
+    public function removeComments(\UA\BlogBundle\Entity\Commentaires $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

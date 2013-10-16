@@ -45,7 +45,7 @@ class game
     private $shortName;
 
     /**
-     * @var string=
+     * @var string
      * @ORM\Column(name="pictures", type="string", length=255)
      */
     private $pictures;

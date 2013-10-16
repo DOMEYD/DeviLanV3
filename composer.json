@@ -1,30 +1,48 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
-    "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": {
+            "": "src/"
+        }
     },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "description": "The \"Symfony Standard Edition\" distribution",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.3-dev"
+        },
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web"
+    },
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "name": "symfony/framework-standard-edition",
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.3.*",
+        "doctrine/data-fixtures": "@dev",
+        "doctrine/doctrine-bundle": "~1.0",
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.2.*",
-		"doctrine/doctrine-fixtures-bundle" : "dev-master",
-		"doctrine/data-fixtures" : "@dev",
-		"doctrine/doctrine-bundle" : "~1.0",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.3.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.3.*",
-		"symfony/doctrine-bridge" : "~2.1",
+        "friendsofsymfony/user-bundle": "dev-master",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "jms/security-extra-bundle": "dev-master",
+        "php": ">=5.3.3",
         "sensio/distribution-bundle": "2.3.*",
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",
-        "incenteev/composer-parameter-handler": "~2.0",
-		"friendsofsymfony/user-bundle": "dev-master",
-        "jms/security-extra-bundle": "dev-master"
+        "symfony/assetic-bundle": "2.3.*",
+        "symfony/doctrine-bridge": "~2.1",
+        "symfony/monolog-bundle": "2.3.*",
+        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/symfony": "2.3.*",
+        "twig/extensions": "1.0.*",
+        "winzou/console-bundle": "dev-master",
+        "stof/doctrine-extensions-bundle": "~1.1@dev"
+    },
+    "require-dev": {
     },
     "scripts": {
         "post-install-cmd": [
@@ -42,18 +60,5 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "minimum-stability": "stable",
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.3-dev"
-        }
-    }
+    "type": "project"
 }

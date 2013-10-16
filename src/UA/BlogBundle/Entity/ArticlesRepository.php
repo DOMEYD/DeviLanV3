@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticlesRepository extends EntityRepository
 {
+	public function getCount() {
+		$qb = $this ->createQueryBuilder('a')
+					->select('COUNT(a.id)');
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
 }

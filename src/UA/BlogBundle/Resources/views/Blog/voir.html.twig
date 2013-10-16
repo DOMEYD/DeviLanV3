@@ -1,14 +1,76 @@
 {% extends "UABlogBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - {{article.titre}}{% endblock %}
+{% block title %}{{ parent() }} - {{article ? article.title : 'error.articleNotFound'|trans}}{% endblock %}
  
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-        <h1 class="title">{{article.titre}}</h1>
-        <div class="corps">
-            {{article.contenu}}
-        </div>
-        <footer>Publié par {{article.auteur}}, le {{ article.date|date('d/m/Y') }}</footer>
-    </article>
-    {{ parent() }}
+	<article class="col-lg-8 col-lg-offset-1">
+		{% if article %}
+			<h1 class="title">
+				{{article.title}}
+			</h1>
+			<footer class="row">
+				<div class="col-lg-3"><span class="glyphicon glyphicon-calendar"></span> {{ article.date|date('d/m/Y') }} {{article.date|date('H:i')}} </div>
+				<div class="col-lg-3"><span class="glyphicon glyphicon-user"></span> {{article.author|upper}}</div>
+			</footer>
+			<div class="corps">
+				{{article.content|nl2br}}
+				{% if is_granted('ROLE_BLOGGER') %}
+					<br>
+					<div class="text-right">
+						<a href="{{ path('UAblog_modifier', {'article' : article.id}) }}" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-edit"></span>
+						</a>
+						<a href="{{ path('UAblog_supprimer', {'article' : article.id}) }}" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+			<hr>
+			{% for commentaire in article.comments if article.comments %}
+				<p class="comments">
+					<strong>{{commentaire.author}}</strong> {{'commentaire.hasPublished'|trans}}<br>
+					<span class="content">{{commentaire.content}}</span>
+				</p>
+			{% else %}
+				{{'commentaire.noCommentaire'|trans}}
+			{% endfor %}
+			<hr>
+			{% if app.user %}
+				<form method="POST" {{form_enctype(form)}}>
+					{{'commentaire.publisher'|trans}} <strong>{{app.user}}</strong>
+					{{ form_widget(form.content, {'attr' : {'class' : 'form-control', 'rows' : '4'}}) }}
+					{{ form_rest(form) }}
+					<input type="submit" value="{{'commentaire.input.comment'|trans}}" class="btn btn-default pull-right">
+					<div class="clearfix"></div>
+				</form>
+			{% else %}
+				<div class="alert alert-warning">{{'commentaire.connectRequired'|trans}}</div>
+			{% endif %}
+		{% else %}
+			<div class="alert alert-danger">
+				<strong>{{'error.warning'|trans}}</strong>
+				{{ 'error.articleNotFound'|trans }}
+			</div>
+		{% endif %}
+	</article>
+	{{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<style type="text/css">
+		article div.corps {
+			padding: 10px;
+		}
+		article footer {
+			border: none;
+			text-align: left;
+		}
+		p.comments .content {
+			display: block;
+			padding-left: 4px;
+			border-left: 3px solid #CDD4D8;
+		}
+	</style>
 {% endblock %}

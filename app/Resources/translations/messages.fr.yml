@@ -1,1 +1,17 @@
+menu:
+    match: "match"
+    rules: "règlement"
+    teams: "équipes"
+    faq: "F.A.Q."
+
+adminBar:
+    hello: "Bonjour"
+    administration: "Administration"
+    logout: "Déconnexion"
+    input:
+        login: "Nom d'utilisateur :"
+        password: "Mot de passe :"
+    log: "Connexion"
+    register: "Inscription"
+
 footer: "Site créé par DOMEY Dimitri | v3.0.3 | 2013"

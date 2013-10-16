@@ -1,0 +1,23 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{'admin.article.delete.title'|trans}}{% endblock %}
+
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		<ol class="breadcrumb">
+			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+			<li class="active">{{ 'breadcrumb.delete'|trans }}</li>
+		</ol>
+		<h2 class="text-center">{{'admin.article.delete.title'|trans}}</h2>
+		<p>
+			<div class="alert alert-danger">{{'admin.article.delete.message'|trans({'%titre%' : article.title})}}</div>
+		</p>
+		<form method="POST" {{ form_enctype(form) }}>
+			<a href="{{ path('UAblog_ajouter') }}" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> {{'admin.article.delete.input.back'|trans}}</a>
+            <input type="submit" class="btn btn-danger" value="{{'admin.article.delete.input.delete'|trans}}" />
+			{{ form_rest(form) }}
+		</form>
+	</article>
+	{{ parent() }}
+{% endblock %}
