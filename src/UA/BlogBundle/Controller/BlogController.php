@@ -63,7 +63,7 @@ class BlogController extends Controller {
 	/**
 	 * @Secure(roles="ROLE_BLOGGER")
 	 */
-	public function addAction() {
+	public function addAction($page) {
 		//init
 		$em = $this->getDoctrine()->getManager();
 		$AddArticle = new Articles;
@@ -83,10 +83,13 @@ class BlogController extends Controller {
 		}
 
 		//recovery last 5 articles
-		$Articles = $em->getRepository('UABlogBundle:Articles')->findBy(array(), array('id' => 'DESC'), 5);
+		$Articles = $em->getRepository('UABlogBundle:Articles')->findBy(array(), array('id' => 'DESC'), 5, ($page-1)*5);
+		$nbrArticles = $em->getRepository('UABlogBundle:Articles')->getCount();
 
 		return $this->render('UABlogBundle:Admin:add.html.twig', array(	'form' => $form->createView(), 
-																		'articles' => $Articles));
+																		'articles' => $Articles,
+																		'page' => $page,
+																		'nbrPage' => ceil($nbrArticles/5)));
 	}
 
 	/**
@@ -101,6 +104,11 @@ class BlogController extends Controller {
 			$form->bind($this->getRequest());
 
 			if ($form->isValid()) {
+				//add modify message
+				$t = $this->get('translator');
+				$modifArticle->setContent($modifArticle->getContent() . chr(13) . chr(10) . $t->trans('admin.modified.by') . $this->getUser());
+				
+				//save
 				$em->persist($modifArticle);
 				$em->flush();
 

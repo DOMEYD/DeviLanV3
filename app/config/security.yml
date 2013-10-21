@@ -1,13 +1,13 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: sha512
         UA\UserBundle\Entity\User: sha512
 
     role_hierarchy:
         ROLE_BLOGGER:       ROLE_USER
         ROLE_ARBITRE:       ROLE_USER
-        ROLE_ADMIN:         [ROLE_USER, ROLE_ARBITRE, ROLE_BLOGGER]
-        ROLE_SUPER_ADMIN:   [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN:         [ROLE_ARBITRE, ROLE_BLOGGER]
+        ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
         in_memory:

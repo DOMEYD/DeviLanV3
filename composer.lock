@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2522c334fc819f50beba6921fd37cf00",
+    "hash": "0f7e5331e6aa6bdfce6036f612514d3d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -292,12 +292,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/data-fixtures.git",
-                "reference": "8ffac1c63f34124f693b93889fa32f4036eb241b"
+                "reference": "dfc0dc9a3f6258c878768218fe49cc092ea8a8d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/8ffac1c63f34124f693b93889fa32f4036eb241b",
-                "reference": "8ffac1c63f34124f693b93889fa32f4036eb241b",
+                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/dfc0dc9a3f6258c878768218fe49cc092ea8a8d1",
+                "reference": "dfc0dc9a3f6258c878768218fe49cc092ea8a8d1",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +339,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2013-10-10 22:08:39"
+            "time": "2013-10-16 14:26:38"
         },
         {
             "name": "doctrine/dbal",
@@ -867,6 +867,68 @@
             "time": "2013-08-18 07:18:44"
         },
         {
+            "name": "helios-ag/fm-bbcode-bundle",
+            "version": "dev-master",
+            "target-dir": "FM/BbcodeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/helios-ag/FMBbCodeBundle.git",
+                "reference": "06eebc11039f5a59ff301b00bfe01254c226fdb3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/helios-ag/FMBbCodeBundle/zipball/06eebc11039f5a59ff301b00bfe01254c226fdb3",
+                "reference": "06eebc11039f5a59ff301b00bfe01254c226fdb3",
+                "shasum": ""
+            },
+            "require": {
+                "mjohnson/decoda": "6.*",
+                "php": ">=5.3.2",
+                "sensio/distribution-bundle": "~2.1",
+                "symfony/assetic-bundle": "~2.0",
+                "symfony/config": "~2.0",
+                "symfony/console": "~2.0",
+                "symfony/dependency-injection": "~2.0",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/http-foundation": "~2.1",
+                "symfony/http-kernel": "~2.0",
+                "symfony/process": "~2.0",
+                "symfony/templating": "~2.0",
+                "symfony/twig-bundle": "~2.0",
+                "symfony/yaml": "~2.0"
+            },
+            "require-dev": {
+                "symfony/symfony": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FM\\BbcodeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Albert Ganiev",
+                    "email": "helios.ag@gmail.com"
+                }
+            ],
+            "description": "Symfony FMBbCodeBundle",
+            "homepage": "https://github.com/helios-ag/FMBbCodeBundle",
+            "keywords": [
+                "bbcode"
+            ],
+            "time": "2013-07-28 04:48:52"
+        },
+        {
             "name": "incenteev/composer-parameter-handler",
             "version": "v2.0.0",
             "target-dir": "Incenteev/ParameterHandler",
@@ -1346,6 +1408,52 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "mjohnson/decoda",
+            "version": "6.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milesj/decoda.git",
+                "reference": "05025d629589831e3b9e07554d16396fcc9e6e1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milesj/decoda/zipball/05025d629589831e3b9e07554d16396fcc9e6e1f",
+                "reference": "05025d629589831e3b9e07554d16396fcc9e6e1f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Decoda": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miles Johnson",
+                    "homepage": "http://milesj.me"
+                }
+            ],
+            "description": "A lightweight lexical string parser for BBCode styled markup.",
+            "homepage": "http://milesj.me/code/php/decoda",
+            "keywords": [
+                "HOOK",
+                "bbcode",
+                "decoda",
+                "filter",
+                "markup",
+                "parser"
+            ],
+            "time": "2013-09-26 04:47:38"
         },
         {
             "name": "monolog/monolog",
@@ -2239,9 +2347,10 @@
         "doctrine/data-fixtures": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "friendsofsymfony/user-bundle": 20,
+        "helios-ag/fm-bbcode-bundle": 20,
         "jms/security-extra-bundle": 20,
-        "winzou/console-bundle": 20,
-        "stof/doctrine-extensions-bundle": 20
+        "stof/doctrine-extensions-bundle": 20,
+        "winzou/console-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

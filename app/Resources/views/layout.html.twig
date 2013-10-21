@@ -19,7 +19,7 @@
 				<li><a href="{{ path('UAblog_default') }}"><span class="glyphicon glyphicon-home glyphicon-posrec"></span></a></li>
 				<li><a href="{{ path('UAMatchBundle_ViewGameSelect') }}">{{'menu.match'|trans|upper}}</a></li>
 				<li><a href="">{{'menu.rules'|trans|upper}}</a></li>
-				<li><a href="">{{'menu.teams'|trans|upper}}</a></li>
+				<li><a href="{{ path('UAMatchBundle_viewTeam') }}">{{'menu.teams'|trans|upper}}</a></li>
 				<li><a href="">{{'menu.faq'|trans|upper}}</a></li>
 			</ul>
 		</nav>
@@ -28,32 +28,34 @@
 			{% endblock %}
 
 			<aside class="col-lg-2">
-				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				{% block aside %}
+					{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 
-					<div class="panel panel-default">
-						<div class="panel-heading">{{'adminBar.hello'|trans}}, {{ app.user.username }}</div>
-						<div class="list-group">
-							<a href="{{ path('UAUser_admin') }}" class="list-group-item">{{'adminBar.administration'|trans}}</a>
-							<a href="{{ path('fos_user_security_logout') }}" class="list-group-item">{{'adminBar.logout'|trans}}</a>
+						<div class="panel panel-default">
+							<div class="panel-heading">{{'adminBar.hello'|trans}}, {{ app.user.username }}</div>
+							<div class="list-group">
+								<a href="{{ path('UAUser_admin') }}" class="list-group-item">{{'adminBar.administration'|trans}}</a>
+								<a href="{{ path('fos_user_security_logout') }}" class="list-group-item">{{'adminBar.logout'|trans}}</a>
+							</div>
 						</div>
-					</div>
 
-				{% else %}
+					{% else %}
 
-					<form action="{{ path('fos_user_security_check') }}" method="post" style="text-align:center;">
-						<label for="username">{{'adminBar.input.login'|trans}}</label>
-						<input type="text" id="username" name="_username" placeholder="{{'adminBar.input.login'}}" class="form-control" />
+						<form action="{{ path('fos_user_security_check') }}" method="post" style="text-align:center;">
+							<label for="username">{{'adminBar.input.login'|trans}}</label>
+							<input type="text" id="username" name="_username" placeholder="{{'adminBar.input.login'}}" class="form-control" />
 
-						<label for="password">{{'adminBar.input.password'|trans}}</label>
-						<input type="password" id="password" name="_password" placeholder="{{'adminBar.input.password'|trans}}" class="form-control" />
-						<br />
-						<div class="btn-group">
-							<input type="submit" value="{{'adminBar.log'|trans}}" class="btn btn-default" />
-							<a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">{{'adminBar.register'|trans}}</a>
-						</div>
-					</form>
+							<label for="password">{{'adminBar.input.password'|trans}}</label>
+							<input type="password" id="password" name="_password" placeholder="{{'adminBar.input.password'|trans}}" class="form-control" />
+							<br />
+							<div class="btn-group">
+								<input type="submit" value="{{'adminBar.log'|trans}}" class="btn btn-default" />
+								<a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">{{'adminBar.register'|trans}}</a>
+							</div>
+						</form>
 
-				{% endif %}
+					{% endif %}
+				{% endblock %}
 			</aside>
 		</section>
 		<footer>

@@ -5,7 +5,11 @@ UAMatchBundle_ViewMatchforGame:
 
 UAMatchBundle_ViewGameSelect:
     pattern: /matchs
-    defaults: { _controller: UAMatchBundle:View:index}
+    defaults: { _controller: UAMatchBundle:View:index }
+
+UAMatchBundle_viewTeam:
+    pattern: /team/{game}/{page}
+    defaults: { _controller: UAMatchBundle:View:team, game: null, page: 1 }
 
 #Match gestion
 UAMatchAdmin_Generate:
@@ -35,8 +39,8 @@ UAMatchAdmin_TeamDelete:
     defaults: { _controller: UAMatchBundle:Admin:teamDelete }
 
 UAMatchAdmin_Team:
-    pattern: /admin/matchs/team/{page}
-    defaults: { _controller: UAMatchBundle:Admin:team, page: 1}
+    pattern: /admin/matchs/team/{game}/{page}
+    defaults: { _controller: UAMatchBundle:Admin:team, game: null, page: 1}
 
 #Gestion of Games
 UAMatchAdmin_Game:

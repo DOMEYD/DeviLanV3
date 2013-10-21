@@ -8,16 +8,20 @@
 	{% endif %}
 
 	<form action="{{ path('fos_user_security_check') }}" method="post" style="width:20%;margin:auto;">
-		<label for="username">Login :</label>
-		<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Nom d'utilisateur :" class="form-control" />
+		<label for="username">{{'security.login.username'|trans}}</label>
+		<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{'security.login.username'|trans}}" class="form-control" />
 
-		<label for="password">Mot de passe :</label>
-		<input type="password" id="password" name="_password" placeholder="Mot de passe :" class="form-control" />
+		<label for="password">{{'security.login.password'|trans}}</label>
+		<input type="password" id="password" name="_password" placeholder="{{'security.login.password'|trans}}" class="form-control" />
 		<br />
 
 		<input type="checkbox" id="remember_me" name="_remember_me" checked />
-		<label for="remember_me">Keep me logged in</label>
+		<label for="remember_me">{{'security.login.remember_me'|trans}}</label>
     	<br />
-		<input type="submit" value="Connexion" class="btn btn-default" />
+		<input type="submit" value="{{'security.login.submit'|trans}}" class="btn btn-default" />
 	</form>
+{% endblock %}
+
+{% block aside %}
+
 {% endblock %}

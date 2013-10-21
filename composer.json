@@ -27,20 +27,22 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "friendsofsymfony/user-bundle": "dev-master",
+        "helios-ag/fm-bbcode-bundle": "6.*@dev",
         "incenteev/composer-parameter-handler": "~2.0",
         "jms/security-extra-bundle": "dev-master",
+        "mjohnson/decoda": "6.*",
         "php": ">=5.3.3",
         "sensio/distribution-bundle": "2.3.*",
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",
+        "stof/doctrine-extensions-bundle": "~1.1@dev",
         "symfony/assetic-bundle": "2.3.*",
         "symfony/doctrine-bridge": "~2.1",
         "symfony/monolog-bundle": "2.3.*",
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/symfony": "2.3.*",
         "twig/extensions": "1.0.*",
-        "winzou/console-bundle": "dev-master",
-        "stof/doctrine-extensions-bundle": "~1.1@dev"
+        "winzou/console-bundle": "dev-master"
     },
     "require-dev": {
     },
@@ -50,14 +52,16 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "FM\\BbcodeBundle\\Composer\\ScriptHandler::installEmoticons"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "FM\\BbcodeBundle\\Composer\\ScriptHandler::installEmoticons"
         ]
     },
     "type": "project"

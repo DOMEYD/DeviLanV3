@@ -6,7 +6,7 @@ a.PlayerDelete:hover {
 	color: red;
 	text-decoration: none;
 }
-#password {
+#TeamPassword {
 	padding: 5px;
 	background-color: #f1c40f;
 	color: #2c3e50;
@@ -19,7 +19,6 @@ a.PlayerDelete:hover {
 
 /* Gestion of the game */
 #GamesGestion {
-	border-top: 1px solid #bdc3c7;
 	padding-top: 3px;
 	margin-top: 3px;
 }

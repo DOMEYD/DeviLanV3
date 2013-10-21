@@ -3,11 +3,12 @@
 namespace UA\MatchBundle\Entity\Match;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * team
  *
- * @ORM\Table()
+ * @ORM\Table(name="_teams")
  * @ORM\Entity(repositoryClass="UA\MatchBundle\Entity\Match\teamRepository")
  */
 class team
@@ -30,7 +31,7 @@ class team
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\game")
+     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\game", inversedBy="teams")
      * @ORM\JoinColumn(nullable=false, onDelete="cascade")
      */
     private $game;
@@ -56,6 +57,18 @@ class team
      */
     private $pool;
 
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UA\MatchBundle\Entity\Match\Players", mappedBy="team", cascade={"persist", "remove"})
+     */
+    private $players;
 
     /**
      * Get id
@@ -180,5 +193,68 @@ class team
     public function getGame()
     {
         return $this->game;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return team
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add players
+     *
+     * @param \UA\MatchBundle\Entity\Match\Players $players
+     * @return team
+     */
+    public function addPlayer(\UA\MatchBundle\Entity\Match\Players $players)
+    {
+        $this->players[] = $players;
+    
+        return $this;
+    }
+
+    /**
+     * Remove players
+     *
+     * @param \UA\MatchBundle\Entity\Match\Players $players
+     */
+    public function removePlayer(\UA\MatchBundle\Entity\Match\Players $players)
+    {
+        $this->players->removeElement($players);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlayers()
+    {
+        return $this->players;
     }
 }

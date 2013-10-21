@@ -28,10 +28,23 @@
 				<thead>
 					<tr>
 						<th>{{ 'admin.team.input.name'|trans }}</th>
-						<th>{{ 'admin.team.input.game'|trans }}</th>
+						<th>
+							{{ 'admin.team.input.game'|trans }}
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									{% for game in games %}
+										<li><a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}">{{game.name}}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						</th>
 						<th colspan="2" class="text-center">{{ 'admin.team.input.action'|trans }}</th>
 					</tr>
 				</thead>
+				<tbody>
 				{% for team in Teams %}
 					<tr>
 						<td>{{team.name}}</td>
@@ -50,17 +63,34 @@
 						<td><a href="{{ path('UAMatchAdmin_TeamDelete', {id: team.id}) }}" class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
 					</tr>
 				{% endfor %}
-				<tr>
-					<td>
-						{% if page > 1 %}
-						<a href="{{ path('UAMatchAdmin_Team', {id: page-1})}}">&#171;</a>
-						{% endif %}
-					</td>
-					<td colspan="2"></td>
-					<td class="text-right"><a href="{{ path('UAMatchAdmin_Team', {id: page+1})}}">&#187;</a></td>
-				</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							{% if page > 1 %}
+								<a href="{{ path('UAMatchAdmin_Team', {'page': page-1, 'game': gameSelected})}}">&#171;</a>
+							{% else %}
+								&#171;
+							{% endif %}
+						</td>
+						<td colspan="2"></td>
+						<td class="text-right">
+							{% if page < nbrPage %}
+								<a href="{{ path('UAMatchAdmin_Team', {'page': page+1, 'game': gameSelected})}}">&#187;</a>
+							{% else %}
+								&#187;
+							{% endif %}
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		{% endif %}
 	</article>
 	{{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/dropdown.js')}}"></script>
+	{{parent()}}
 {% endblock %}

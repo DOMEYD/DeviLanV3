@@ -6,6 +6,10 @@ admin:
             input:
                 title: "Titre :"
                 content: "Tapez ici le contenu de votre article ..."
+            table:
+                titre: "Titre :"
+                author: "Auteur"
+                action: "Action"
         modif:
             title: "Modifier l'article"
         delete:
@@ -19,7 +23,8 @@ admin:
         article:
             add: 
                 contentNotBlank: "Le contenu de l'article ne peut pas être vide !"
-
+    modified:
+        by: "Message modifié par : "
 breadcrumb:
     home: "Accueil"
     admin: "Administration"

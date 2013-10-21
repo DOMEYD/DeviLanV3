@@ -78,3 +78,9 @@ fos_user:
     db_driver:     orm
     firewall_name: main
     user_class:    UA\UserBundle\Entity\User
+
+fm_bbcode:
+    filter_sets:
+        blog_filter:
+            xhtml: true
+            filters: [ default, block, code, email, image, list, quote, text, url, video ]

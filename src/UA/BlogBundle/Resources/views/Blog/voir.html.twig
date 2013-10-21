@@ -13,7 +13,7 @@
 				<div class="col-lg-3"><span class="glyphicon glyphicon-user"></span> {{article.author|upper}}</div>
 			</footer>
 			<div class="corps">
-				{{article.content|nl2br}}
+				{{article.content|bbcode_filter('blog_filter')}}
 				{% if is_granted('ROLE_BLOGGER') %}
 					<br>
 					<div class="text-right">

@@ -15,7 +15,7 @@
 			<!--Team description-->
 			<div class="col-lg-5">
 				<h2>{{ teamInfo.name }}</h2>
-				<div id="password">{{teamInfo.password}}</div>
+				<div id="TeamPassword">{{teamInfo.password}}</div>
 				<table class="table">
 				{% for player in Players %}
 					<tr>
@@ -39,12 +39,17 @@
 					<a href="{{ path('UAMatchAdmin_Team') }}" class="btn btn-danger col-lg-4 col-lg-offset-1">
 						<span class="glyphicon glyphicon-remove"></span> {{ 'admin.team.cancel'|trans }}
 					</a>
+					<div class="text-center">
+						<a href="{{path('UAMatchAdmin_TeamValide', {id : teamInfo.id})}}" class="btn">
+							{{'admin.team.forceValide'|trans}}
+						</a>
+					</div>
 				</div>
 			</div>
 			<!--Form to add players-->
 			<div class="col-lg-7">
 				{% if Players|length != teamInfo.game.nbrPlayerRequired %}
-				<h2 style="text-align:center;">{{ 'admin.team.playerAdd'|trans }}</h2>
+				<h2 class="text-center">{{ 'admin.team.playerAdd'|trans }}</h2>
 				<form method="POST" {{ form_enctype(form) }}>
 					<div class="input-group">
 						{{ form_widget(form.username, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.team.input.playerName'|trans,  'autofocus' : 'autofocus'}}) }}
@@ -57,6 +62,9 @@
 				{% else %}
 					<div class="alert alert-success">{{ 'admin.team.message.nbrPlayerComplete'|trans }}</div>
 				{% endif %}
+				<div class="alert alert-warning">
+					<strong>{{'admin.team.note.strong'|trans}} :</strong> {{'admin.team.note.content'|trans}}
+				</div>
 			</div>
 		</div>
 

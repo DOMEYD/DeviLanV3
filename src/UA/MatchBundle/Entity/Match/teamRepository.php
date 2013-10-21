@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class teamRepository extends EntityRepository
 {
+	public function getCount(array $where = null) {
+		$qb = $this ->createQueryBuilder('t')
+					->select('COUNT(t.id)');
+
+		if($where)
+		$qb 		->where($qb->expr()->in('t.game', $where));
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
 }

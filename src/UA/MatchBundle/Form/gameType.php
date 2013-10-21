@@ -21,7 +21,7 @@ class gameType extends AbstractType
             ->add('generator', 'choice', array(
                                         'choices' => array('X' => 'No generator found !!')
                                         ))
-            ->add('nbrPlayerRequired');
+            ->add('nbrPlayerRequired', 'integer', array('attr' => array('value' => '1')));
     }
 
     /**

@@ -5,10 +5,11 @@ breadcrumb:
     game: "Jeux"
     team : "Equipes"
     playerAdd: "Ajout de joueur"
+    matchGen: "Génération des matchs"
+    selectGame: "Sélection du jeu"
+    pool: "Choix du nombre de pools"
+    error: "Erreurs"
 generate : "Génération"
-matchGen: "Génération des matchs"
-gameSelection: "Sélection du jeu"
-poolGeneration: "Choix du nombre de pools"
 
 #Admin
 admin:
@@ -32,16 +33,37 @@ admin:
         validate: "Valider"
         miss: "Manque"
         cancel: "Annuler"
+        forceValide: "Forcer la validation ..."
         message:
             nbrPlayerComplete: "Le nombre de joueur requis est atteind !"
+        note:
+            strong: "Note"
+            content: "L'utilisateur peut utiliser son pseudo et le mot de passe affiché à gauche pour se connecter !"
+    generate:
+        select: 
+            title: "Choix du jeux :"
+            alert: "Aucun jeux disponible ! Veuillez en ajouter !"
+        pool:
+            submit: "Génerer"
+    error:
+        AdminReturn: "Retourner à l'Administration"
 gameSelectionTitle: "Veuillez choisir un jeu :"
 ArbitreTitle: "Mise à jour des scores"
 
+#team page
+team:
+    title: "Equipes"
+    game: "Selection"
+    table:
+        name: "Nom de l'équipe :"
+        gameName: "Jeux"
+
 #Admin forms field
-AdminReturn: "Retourner à l'Administration"
 MatchReturn: "Retourner à la selection du jeu"
 
 #Admin messages
+error:
+    teamAlreadyExist: "Une team portant ce nom existe déjà pour le jeu sélectionné !"
 BlankPicture: "Une image doit être spécifiée !"
 gameSuccess: "Le jeux a bien été créé !"
 nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."

@@ -1,0 +1,72 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'team.title'|trans }}{% endblock %}
+
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		<div class="row">
+			<ul class="col-md-3" id="gameBar">
+				<li>
+					{{'team.game'|trans}}
+				</li>
+				{% for game in games %}
+				<li {{game.id == gameSelect ? 'class="active"'}}>
+					<a href="{{game.id != gameSelect ? path('UAMatchBundle_viewTeam', {'game':game.id}) : path('UAMatchBundle_viewTeam')}}">
+						<img src="{{asset('uploads/img/' ~ game.pictures)}}">
+						{{game.name}}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
+			<div class="col-md-9">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th>{{'team.table.name'|trans}}</th>
+							<th>{{'team.table.gameName'|trans}}</th>
+						</tr>						
+					</thead>
+					<tbody>
+						{% for team in teams %}
+							<tr>
+								<td>#{{team.id}}</td>
+								<td>{{team.name}}</td>
+								<td>{{team.game.name}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>
+								{% if pageActive > 1 %}
+									<a href="{{path('UAMatchBundle_viewTeam', {'game':gameSelect, 'page':pageActive-1})}}">
+										&#171;
+									</a>
+								{% else %}
+									&#171;
+								{% endif %}
+							</td>
+							<td></td>
+							<td class="text-right">
+								{% if pageActive < nbrPage %}
+									<a href="{{path('UAMatchBundle_viewTeam', {'game':gameSelect, 'page':pageActive+1})}}">
+										&#187;
+									</a>
+								{% else %}
+									&#187;
+								{% endif %}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</article>
+	{{parent()}}
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{asset('css/teams.css')}}">
+	{{parent()}}
+{% endblock %}

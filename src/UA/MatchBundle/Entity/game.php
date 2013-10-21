@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * game
  *
- * @ORM\Table()
+ * @ORM\Table(name="_games")
  * @ORM\Entity(repositoryClass="UA\MatchBundle\Entity\gameRepository")
  * @UniqueEntity(fields="name", message="Le nom du jeu ne peut pas être le même qu'une saisie précédente.")
  */
@@ -33,7 +33,7 @@ class game
 
     /**
      * @var string
-     * @ORM\Column(name="shortName", type="string", length=255)
+     * @ORM\Column(name="shortName", type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(
      *      min = "1",
@@ -65,6 +65,11 @@ class game
     private $nbrPlayerRequired;
 
     private $file;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UA\MatchBundle\Entity\Match\team", mappedBy="game")
+     */
+    private $teams;
 
     public function setFile($file){
         $this->file = $file;
@@ -217,4 +222,44 @@ class game
 
         $this->pictures = $name;
   }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->teams = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add teams
+     *
+     * @param \UA\MatchBundle\Entity\Match\team $teams
+     * @return game
+     */
+    public function addTeam(\UA\MatchBundle\Entity\Match\team $teams)
+    {
+        $this->teams[] = $teams;
+    
+        return $this;
+    }
+
+    /**
+     * Remove teams
+     *
+     * @param \UA\MatchBundle\Entity\Match\team $teams
+     */
+    public function removeTeam(\UA\MatchBundle\Entity\Match\team $teams)
+    {
+        $this->teams->removeElement($teams);
+    }
+
+    /**
+     * Get teams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeams()
+    {
+        return $this->teams;
+    }
 }

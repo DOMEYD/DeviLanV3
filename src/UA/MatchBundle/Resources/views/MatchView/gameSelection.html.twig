@@ -3,8 +3,8 @@
 {% block title %}{{ parent() }} - Sélection du jeux{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-    	<h2>{{ 'gameSelectionTitle'|trans }}</h2>
+	<article class="col-lg-8 col-lg-offset-1">
+		<h2>{{ 'gameSelectionTitle'|trans }}</h2>
 		<div id="GamesGestion">
 			{% for game in games %}
 				<p class="game">

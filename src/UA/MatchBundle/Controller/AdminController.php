@@ -29,24 +29,29 @@ class AdminController extends Controller
 	public function generateAction($etape, $gameID) {
 		$em = $this->getDoctrine()->getManager();
 
-		//Verify if Matchs for this gameID wasn't already generate
+		//Verify if Matchs for this gameID weren't already generate
 		if(!empty($gameID)) {
 			$MatchsAlreadyGenerate = $em->getRepository('UAMatchBundle:Match\matchs')->findBy(array('game' => $gameID));
 		}
 
+		/*
+		 * select the game
+		 */
 		if($etape == 0 && empty($gameID)) {
 			$games = $em->getRepository('UAMatchBundle:game')->findAll();
-			return $this->render('UAMatchBundle:Admin:gameSelection.html.twig', array('games' => $games));
-		} elseif($etape == 1 && !empty($gameID) && count($MatchsAlreadyGenerate) == 0) {
-			$teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array('game' => $gameID, 'present' => true));
-			if(!$teams) {
-				//ERREUR
-			}
-			else {
-				$nbrTeams = count($teams);
-				$nbrPoolAdvisable = ceil($nbrTeams / 4);
-			}
-			return $this->render('UAMatchBundle:Admin:poolGeneration.html.twig', array(	'teamName' => $teams[0]->getGame(),
+			return $this->render('UAMatchBundle:Admin:generate.selectGame.html.twig', array('games' => $games));
+		}
+		/*
+		 * Advice the number of pool
+		 */
+		elseif($etape == 1 && !empty($gameID) && count($MatchsAlreadyGenerate) == 0) {
+			$game = $em->find('UAMatchBundle:game', $gameID);
+
+			//Calcul number of pool
+			$nbrTeams = count($game->getTeams());
+			$nbrPoolAdvisable = ceil($nbrTeams / 4);
+
+			return $this->render('UAMatchBundle:Admin:generate.pool.html.twig', array(	'game' => $game,
 																						'nbrTeams' => $nbrTeams,
 																						'nbrPoolAdvisable' => $nbrPoolAdvisable));
 		}
@@ -114,7 +119,7 @@ class AdminController extends Controller
 				$em->persist($Match);
 				$em->flush();
 
-				/* Calcul step */
+				/* Found actual step */
 				$Step = (int) $Match->getStep();
 				$braket = substr($Match->getStep(), -1);
 
@@ -192,12 +197,16 @@ class AdminController extends Controller
 		}
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
 	public function playeraddAction($id) {
+		//init
+		$em = $this->getDoctrine()->getManager();
 		$Player = new Players();
 		$form = $this->createForm(new PlayersType, $Player);
 
 		//Recovery entity team
-		$em = $this->getDoctrine()->getManager();
 		$team = $em->find('UAMatchBundle:Match\team', $id);
 
 		//Submit form
@@ -208,18 +217,23 @@ class AdminController extends Controller
 				//Complete team
 				$Player->setTeam($team);
 
+				//Create a new user able to connect on the site
+				$userManager = $this->container->get('fos_user.user_manager');
+				$user = $userManager->createUser();
+				$user->setUsername($Player->getUsername());
+				$user->setEmail( strtolower($Player->getUsername()) . "@devi.lan" );
+				$user->setPlainPassword($team->getPassword());
+				$userManager->updateUser($user);
+
+				//link the fosUser account and the player register
+				$Player->setAccount($user);
+
 				//Save in Database
 				$em->persist($Player);
 				$em->flush();
 
 				//Empty form
 				$form = $this->createForm(new PlayersType);
-				
-				//Recovery of player from the team
-				$players = $em->getRepository('UAMatchBundle:Match\Players')->findByTeam($team);
-
-				return $this->render('UAMatchBundle:Admin:PlayerAdd.html.twig', array('teamInfo' => $team, 'Players' => $players, 'form' => $form->createView(), 'error' => $formError));
-	
 			}
 		}
 		//Recovery of player from the team
@@ -230,6 +244,9 @@ class AdminController extends Controller
 																					'form' => $form->createView()));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
 	public function playerdeleteAction($id) {
 		//Recovery entity Players
 		$em = $this->getDoctrine()->getManager();
@@ -238,7 +255,7 @@ class AdminController extends Controller
 		//ID of the team Recovery
 		$idTeam = $player->getTeam()->getId();
 
-		//Delete it
+		//Delete it and the FOSUser
 		$em->remove($player);
 		$em->flush();
 
@@ -246,16 +263,26 @@ class AdminController extends Controller
 		return $this->redirect($this->generateUrl('UAMatchAdmin_PlayerAdd', array('id' => $idTeam)));
 	}
 
-	public function teamAction($page) {
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
+	public function teamAction($game, $page) {
 		//initialize
+		$em = $this->getDoctrine()->getManager();
 		$newTeam = new team();
 		$form = $this->createForm(new teamType, $newTeam);
-		$em = $this->getDoctrine()->getManager();
 
 		if ($this->getRequest()->getMethod() == 'POST') {
 			$form->bind($this->getRequest());
 
 			if ($form->isValid()) {
+				//Verifing if a team with this name exist in this game
+				$TeamExist = $em->getRepository('UAMatchBundle:Match\team')->findOneBy(array('name' => $newTeam->getName(),
+																							 'game' => $newTeam->getGame()));
+				if(!empty($TeamExist)) {
+					return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => 'teamAlreadyExist'));
+				}
+
 				//Complete missing values
 				$newTeam->setPresent(False);
 				$newTeam->setPassword(substr(sha1($newTeam->getName() + time()), 0, 6)); //password from 6 first character sha1 of TeamName and time
@@ -269,18 +296,35 @@ class AdminController extends Controller
 			}
 		}
 
-		$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array(), array('id' => 'DESC'), 5, ($page-1)*5);
+		$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy($game ? array('game' => $game) : array(),
+																		array('id' => 'DESC'),
+																		5, ($page-1)*5);
 
-		return $this->render(	'UAMatchBundle:Admin:team.html.twig', array('form' => $form->createView(), 
-																			'Teams' => $Teams,
-																			'page' => $page));
+		$nbrTeams = $em->getRepository('UAMatchBundle:Match\team')->getCount(array($game));
+		$Games = $em->getRepository('UAMatchBundle:game')->findAll();
+
+		return $this->render('UAMatchBundle:Admin:team.html.twig', array('form' => $form->createView(), 
+																		 'Teams' => $Teams,
+																		 'page' => $page,
+																		 'gameSelected' => $game,
+																		 'nbrPage' => ceil($nbrTeams/5),
+																		 'games' => $Games));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
 	public function teamvalideAction($id) {
 		//Recovery entity Players
 		$em = $this->getDoctrine()->getManager();
-		$Team = $em->getRepository('UAMatchBundle:Match\team')->find($id);
+		$Team = $em->find('UAMatchBundle:Match\team', $id);
 
+		//Validate the FOSUsers
+		$Players = $Team->getPlayers();
+		foreach ($Players as $player) {
+			$player->getAccount()->setEnabled(true);
+		}
+		
 		//Update Present
 		$Team->setPresent(True);
 		$em->persist($Team);
@@ -289,10 +333,13 @@ class AdminController extends Controller
 		return $this->redirect($this->generateUrl('UAMatchAdmin_Team'));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
 	public function teamdeleteAction($id) {
 		//Recovery entity Team
 		$em = $this->getDoctrine()->getManager();
-		$team = $em->getRepository('UAMatchBundle:Match\team')->find($id);
+		$team = $em->find('UAMatchBundle:Match\team', $id);
 
 		//Delete it
 		$em->remove($team);
@@ -302,6 +349,9 @@ class AdminController extends Controller
 		return $this->redirect($this->generateUrl('UAMatchAdmin_Team'));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
 	public function gameAction($page) {
 		//Initialize
 		$success = false;
@@ -336,6 +386,9 @@ class AdminController extends Controller
 																			'success' => $success));
 	}
 
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
 	public function gamedeleteAction($gameId) {
 		//Recovery entity Players
 		$em = $this->getDoctrine()->getManager();

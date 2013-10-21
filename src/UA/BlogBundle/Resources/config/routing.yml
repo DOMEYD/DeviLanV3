@@ -1,7 +1,9 @@
 #ADMIN
 UAblog_ajouter:
-    path:     /admin/add
-    defaults: { _controller: UABlogBundle:Blog:add }
+    path:     /admin/add/{page}
+    defaults: { _controller: UABlogBundle:Blog:add, page: 1 }
+    requirements:
+        id: \d*
 
 UAblog_modifier:
     path:     /admin/modif/{article}

@@ -7,7 +7,7 @@
 		{% for article in Articles if Articles %}
 			<div class="BlogArticle">
 				<h1 class="title"><a href="{{ path('UAblog_voir', {'slug' : article.slug }) }}">{{article.title}}</a></h1>
-				<div class="corps">{{ article.content|nl2br }}</div>
+				<div class="corps">{{ article.content|bbcode_filter('blog_filter') }}</div>
 				<footer>{{'article.published'|trans}} {{article.author}}</footer>
 			</div>
 		{% else %}

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Players
  *
- * @ORM\Table()
+ * @ORM\Table(name="_players")
  * @ORM\Entity(repositoryClass="UA\MatchBundle\Entity\Match\PlayersRepository")
  */
 class Players
@@ -29,11 +29,16 @@ class Players
     private $username;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\Match\team")
+     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\Match\team", inversedBy="players")
      * @ORM\JoinColumn(nullable=false, onDelete="cascade")
      */
     private $team;
 
+    /**
+     * @ORM\OneToOne(targetEntity="UA\UserBundle\Entity\User", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $account;
 
     /**
      * Get id
@@ -89,5 +94,28 @@ class Players
     public function getTeam()
     {
         return $this->team;
+    }
+
+    /**
+     * Set account
+     *
+     * @param \UA\UserBundle\Entity\User $account
+     * @return Players
+     */
+    public function setAccount(\UA\UserBundle\Entity\User $account)
+    {
+        $this->account = $account;
+    
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \UA\UserBundle\Entity\User 
+     */
+    public function getAccount()
+    {
+        return $this->account;
     }
 }
