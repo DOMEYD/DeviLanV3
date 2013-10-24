@@ -18,19 +18,46 @@ admin:
                 back: "Revenir en arrière"
                 delete: "Supprimer"
             message: "Etes-vous certain de vouloir supprimer l'article \"%titre%\" ?"
-
+    faq:
+        add:
+            title: "Ajouter une Q/R"
+            table: 
+                question: "Question"
+                reply: "Réponse"
+                action: "Actions"
+        input:
+            question: "Q:"
+            questionPlaceholder: "Question..."
+            reply: "R:"
+            replyPlaceholder: "Réponse..."
+            add: "Ajouter"
+        noFAQ: "La FAQ est vide !"
+        delete:
+            title: "Supprimer un élement de la FAQ"
+            input:
+                back: "Revenir en arrière"
+                delete: "Supprimer"
+            message: "Etes-vous certain de vouloir supprimer la question \"%titre%\" ?"
     error:
         article:
             add: 
                 contentNotBlank: "Le contenu de l'article ne peut pas être vide !"
     modified:
         by: "Message modifié par : "
+
+#BreadCrumb
 breadcrumb:
     home: "Accueil"
     admin: "Administration"
     add: "Ajouter"
     modify: "Modifier"
     delete: "Supprimer"
+
+#Tooltips
+tooltip:
+    edit: "Modifier"
+    delete: "Supprimer"
+
 
 #Article
 article:
@@ -50,3 +77,5 @@ error:
     warning: "Attention !"
     articleNotFound: "Cet article n'existe pas..."
     noArticle: "Aucun article à afficher !"
+    faq:
+        noQuestion: "La FAQ est actuellement vide !"

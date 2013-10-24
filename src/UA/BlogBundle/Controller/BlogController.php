@@ -1,4 +1,4 @@
-<?
+<?php
 namespace UA\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

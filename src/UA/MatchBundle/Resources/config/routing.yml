@@ -8,7 +8,7 @@ UAMatchBundle_ViewGameSelect:
     defaults: { _controller: UAMatchBundle:View:index }
 
 UAMatchBundle_viewTeam:
-    pattern: /team/{game}/{page}
+    pattern: /team/{page}/{game}
     defaults: { _controller: UAMatchBundle:View:team, game: null, page: 1 }
 
 #Match gestion
@@ -19,6 +19,10 @@ UAMatchAdmin_Generate:
 UAMatchBundle_Arbitrage:
     pattern: /admin/matchs/referee/{MatchID}
     defaults: { _controller: UAMatchBundle:Admin:referee}
+
+UAMatchBundle_hour:
+    pattern: /admin/matchs/hour/{MatchID}
+    defaults: { _controller: UAMatchBundle:Admin:hour }
 
 #Gestion of Players
 UAMatchAdmin_PlayerAdd:
@@ -39,7 +43,7 @@ UAMatchAdmin_TeamDelete:
     defaults: { _controller: UAMatchBundle:Admin:teamDelete }
 
 UAMatchAdmin_Team:
-    pattern: /admin/matchs/team/{game}/{page}
+    pattern: /admin/matchs/team/{page}/{game}
     defaults: { _controller: UAMatchBundle:Admin:team, game: null, page: 1}
 
 #Gestion of Games

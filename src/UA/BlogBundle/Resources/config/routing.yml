@@ -17,7 +17,20 @@ UAblog_supprimer:
     requirements:
         id: \d*
 
-#VIEW
+UAFAQ_add:
+    path: /admin/faq/add/{id}
+    defaults: {_controller: UABlogBundle:FAQ:add, id: null}
+
+UAFAQ_delete:
+    path: /admin/faq/delete/{id}
+    defaults: {_controller: UABlogBundle:FAQ:delete}
+
+#FAQ VIEW
+UAFAQ_voir:
+    path: /faq
+    defaults: { _controller: UABlogBundle:FAQ:index }
+
+#BLOG VIEW
 UAblog_voir:
     path:     /view/{slug}
     defaults: { _controller: UABlogBundle:Blog:voir }

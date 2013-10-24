@@ -1,1 +1,5 @@
 app/cache/*.*
+vendor/doctrine/data-fixtures/
+vendor/doctrine/doctrine-fixtures-bundle/Doctrine/Bundle/FixturesBundle/
+vendor/friendsofsymfony/user-bundle/FOS/UserBundle/
+vendor/jms/security-extra-bundle/JMS/SecurityExtraBundle/

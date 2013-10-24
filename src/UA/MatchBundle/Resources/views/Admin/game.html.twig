@@ -62,20 +62,29 @@
 		
 		<div id="GamesGestion">
 			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>{{'admin.game.table.name'|trans}}</th>
+						<th>{{'admin.game.table.generator'|trans}}</th>
+						<th>{{'admin.game.table.nbrPlayer'|trans}}</th>
+						<th class="text-right">{{'admin.game.table.action'|trans}}</th>
+					</tr>
+				</thead>
 				{% for game in games %}
 					<tr>
 						<td><img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"></td>
 						<td>{{game.name}}</td>
 						<td>{{game.generator}}</td>
 						<td>{{game.nbrPlayerRequired}}</td>
-						<td>
-							<a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}" class="btn btn-xs btn-default">
+						<td class="text-right">
+							<a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.teamAdd'|trans}}">
 								<span class="glyphicon glyphicon-user"></span>
 							</a>
-							<a href="{{path('UAMatchAdmin_Generate', {'etape': 1, 'gameID': game.id})}}" class="btn btn-xs btn-default">
+							<a href="{{path('UAMatchAdmin_Generate', {'etape': 1, 'gameID': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.generate'|trans}}">
 								<span class="glyphicon glyphicon-cog"></span>
 							</a>
-							<a href="{{ path('UAMatchAdmin_GameDelete', {'gameId' : game.id}) }}" class="btn btn-xs btn-default">
+							<a href="{{ path('UAMatchAdmin_GameDelete', {'gameId' : game.id}) }}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.delete'|trans}}">
 								<span class="glyphicon glyphicon-remove"></span>
 							</a>
 						</td>
@@ -85,6 +94,17 @@
 		</div>
 	</article>
 	{{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
+	<script type="text/javascript">
+	$(function() {
+		$('a').tooltip();
+	})(jquery);
+	</script>
+	{{parent()}}
 {% endblock %}
 
 {% block stylesheets %}

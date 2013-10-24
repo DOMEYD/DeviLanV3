@@ -16,9 +16,8 @@ class ViewController extends Controller
 	public function viewgameAction($id) {
 		$em = $this->getDoctrine()->getManager();
 		
-		$Matchs = $em->getRepository('UAMatchBundle:Match\matchs')->findByGame($id);
-		usort($Matchs, array($this, 'cmp'));
-
+		$Matchs = $em->getRepository('UAMatchBundle:Match\matchs')->getWithPool($id);
+		
 		return $this->render('UAMatchBundle:MatchView:viewMatchs.html.twig', array('Matchs' => $Matchs));
 	}
 	
@@ -34,19 +33,12 @@ class ViewController extends Controller
 		$games = $em->getRepository('UAMatchBundle:game')->findAll();
 
 		//count the number of team for generate pages
-		$nbrTeam = $em->getRepository('UAMatchBundle:Match\team')->getCount(array($game));
+		$nbrTeam = $em->getRepository('UAMatchBundle:Match\team')->getCount($game ? array($game) : null);
 
 		return $this->render('UAMatchBundle:TeamView:index.html.twig', array(	'teams' => $teams,
 																				'games' => $games,
 																				'gameSelect' => $game,
 																				'pageActive' => $page,
-																				'nbrPage' => ceil($nbrTeam/10)));
-	}
-
-	/*
-	 * Function for sort array by Object Property 'pool'
-	 */
-	private function cmp($a, $b) {
-		return strcmp($a->getTeamA()->getPool(), $b->getTeamA()->getPool());
+																				'nbrPage' => ceil($nbrTeam/5)));
 	}
 }

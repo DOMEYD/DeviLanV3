@@ -1,12 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>{% block title %}Devilan{% endblock %}</title>
 		{% block stylesheets %}
-			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
-			<link rel="stylesheet" href="{{ asset('css/bootstrap-glyphicons.css') }}" type="text/css" />
-			<link rel="stylesheet" type="text/css" href="{{ asset('css/design.css') }}" />
+			<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css">
+			<link rel="stylesheet" type="text/css" href="{{ asset('css/design.css') }}">
 		{% endblock %}
 		<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +19,7 @@
 				<li><a href="{{ path('UAMatchBundle_ViewGameSelect') }}">{{'menu.match'|trans|upper}}</a></li>
 				<li><a href="">{{'menu.rules'|trans|upper}}</a></li>
 				<li><a href="{{ path('UAMatchBundle_viewTeam') }}">{{'menu.teams'|trans|upper}}</a></li>
-				<li><a href="">{{'menu.faq'|trans|upper}}</a></li>
+				<li><a href="{{path('UAFAQ_voir')}}">{{'menu.faq'|trans|upper}}</a></li>
 			</ul>
 		</nav>
 		<section class="row">

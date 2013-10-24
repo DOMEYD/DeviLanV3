@@ -49,15 +49,19 @@ class AdminController extends Controller
 
 			//Calcul number of pool
 			$nbrTeams = count($game->getTeams());
-			$nbrPoolAdvisable = ceil($nbrTeams / 4);
+			$nbrPoolAdvisable = ceil($nbrTeams / 6);
 
 			return $this->render('UAMatchBundle:Admin:generate.pool.html.twig', array(	'game' => $game,
 																						'nbrTeams' => $nbrTeams,
 																						'nbrPoolAdvisable' => $nbrPoolAdvisable));
 		}
+		/*
+		 * Generate pools and matchs
+		 */
 		elseif($etape == 2 && !empty($gameID) && count($MatchsAlreadyGenerate) == 0) {
 			//Generation of pools
-			$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array('game' => $gameID, 'present' => true));
+			$Teams = $em->getRepository('UAMatchBundle:Match\team')->findBy(array('game' => $gameID, 'present' => true),
+																			array('password' => 'ASC'));
 			$i = 1;
 			$nbrPool = $this->getRequest()->request->get('nbrPool');
 			foreach ($Teams as $team) {
@@ -75,17 +79,16 @@ class AdminController extends Controller
 			foreach ($Teams as $id1 => $eq1) {
 				foreach ($Teams as $id2 => $eq2) {
 					if($Teams[$id1]->getId() < $Teams[$id2]->getId() && $Teams[$id1]->getPool() == $Teams[$id2]->getPool()) {
-						//print_r($Teams[$id1]->getId() . ' vs ' . $Teams[$id2]->getId() . ' in ' . $Teams[$id2]->getPool() . '<br>');
 						$Matchs = new Matchs();
 						$Matchs->setTeamA($Teams[$id1]);
 						$Matchs->setTeamB($Teams[$id2]);
 						$Matchs->setGame($Teams[$id1]->getGame());
 						$Matchs->setStep('Pool');
 						$em->persist($Matchs);
-						$em->flush();
 					}
 				}
 			}
+			$em->flush();
 			return $this->render('UAMatchBundle:Admin:generation.html.twig', array(	'message' => 'GenerateSuccessful', 
 																					'game' => $Teams[0]->getGame()));
 		}
@@ -108,14 +111,17 @@ class AdminController extends Controller
 	 */
 	public function refereeAction($MatchID) {
 		$em = $this->getDoctrine()->getManager();
-		$Match = $em->getRepository('UAMatchBundle:Match\matchs')->find($MatchID);
+		$Match = $em->find('UAMatchBundle:Match\matchs', $MatchID);
+		$form = $this 	->createFormBuilder($Match)
+						->add('scoreA')
+						->add('scoreB')
+						->getForm();
 
 		if(count($Match) == 1){ //Test of Match ID
 
 			if($this->getRequest()->getMethod() == 'POST') {
 				/* Update the scores */
-				$Match->setScoreA($this->getRequest()->request->get('sc1'));
-				$Match->setScoreB($this->getRequest()->request->get('sc2'));
+				$form->bind($this->getRequest());
 				$em->persist($Match);
 				$em->flush();
 
@@ -127,41 +133,60 @@ class AdminController extends Controller
 				 * Generate the rest of the tree according to the step
 				 */
 				if($Match->getStep() == 'Pool') {
-					$MatchRemaining = $em->getRepository('UAMatchBundle:Match\matchs')->findBy(array('game' => $Match->getGame(), 'scoreA' => null, 'scoreB' => null));
+					$MatchRemaining = $em->getRepository('UAMatchBundle:Match\matchs')->findBy(array(	'game' => $Match->getGame(), 
+																										'scoreA' => null,
+																										'scoreB' => null));
 					
 					/*
 					 * End of pool's matchs : Generate tree of match
 					 */
 					if(count($MatchRemaining) == 0) {
 						/* Calculate number of Elite team and number of turn */
-						$nbrTeams = count($em->getRepository('UAMatchBundle:Match\team')->findBy(array('game' => $Match->getGame()->getId(), 'present' => true)));
+						$nbrTeams = $em->getRepository('UAMatchBundle:Match\team')->getCount(array($Match->getGame()->getId()));
 						$nbrTeamAllow = pow(2, ceil(log($nbrTeams) / log(2))-1);
 						$NbrTurn = ceil(log($nbrTeamAllow) / log(2));
 
 						/* Calcul scores of teams */
-						$MatchScore = $em->getRepository('UAMatchBundle:Match\matchs')->findAll();
+						$MatchScore = $em->getRepository('UAMatchBundle:Match\matchs')->getWithPool($Match->getGame()->getId());
 						$tableScore = array();
 						foreach ($MatchScore as $match) {
-							/* Define who is the winner and who is the loser*/
-							$match->getScoreA() > $match->getScoreB() ? $eqW = $match->getTeamA() : $eqW = $match->getTeamB();
-							$match->getScoreA() > $match->getScoreB() ? $eqL = $match->getTeamB() : $eqL = $match->getTeamA();
-							
-							$teamName = $eqW->getName();
-							$keyTable = FALSE;
-							foreach ($tableScore as $key => $value) {
-								if($value[0] == $teamName){
-									$keyTable = $key;
-								}
+							//Recovery values
+							$pool = $match->getTeamA()->getPool();
+							$teamA = $match->getTeamA(); 
+							$teamB = $match->getTeamB();
+
+							//Test offset exist or init it
+							if(!array_key_exists($pool, $tableScore)) {
+								$tableScore[$pool] = array();
 							}
-							
-							if($keyTable == FALSE) {
-								$tableScore[] = array($teamName, '$eqW', 1);
+							if(!array_key_exists($teamA->getId(), $tableScore[$pool])) {
+								$tableScore[$pool][$teamA->getId()] = array(0, $teamA);
 							}
-							else {
-								$tableScore[$keyTable][2] += 1;
+							if(!array_key_exists($teamB->getId(), $tableScore[$pool])) {
+								$tableScore[$pool][$teamB->getId()] = array(0, $teamB);
+							}							
+
+							//Update scores
+							if($match->getScoreA() > $match->getScoreB()) {
+								$tableScore[$pool][$match->getTeamA()->getId()][0]++;
+							} elseif($match->getScoreA() < $match->getScoreB()) {
+								$tableScore[$pool][$match->getTeamB()->getId()][0]++;
+							} else {
+								$tableScore[$pool][$match->getTeamB()->getId()][0] += 0.5;
+								$tableScore[$pool][$match->getTeamA()->getId()][0] += 0.5;								
 							}
 						}
-						print_r($tableScore);
+
+						/* sort team by pool by score */
+
+
+						/* DEBUG */
+						foreach ($tableScore as $keyP => $pool) {
+							print_r('<strong>'. $keyP. '</strong><br>');
+							foreach ($pool as $key => $value) {
+								print_r($key. ' : '.$value[0].'<br>');
+							}
+						}
 						return ;
 					}
 				}
@@ -188,13 +213,42 @@ class AdminController extends Controller
 				return $this->redirect($this->generateUrl('UAMatchBundle_ViewMatchforGame', array('id' => $Match->getGame()->getId())));
 			}
 			else {
-				return $this->render('UAMatchBundle:Admin:ArbitrageForm.html.twig', array('Match' => $Match));
+				return $this->render('UAMatchBundle:Admin:ArbitrageForm.html.twig', array(	'Match' => $Match,
+																							'form' => $form->createView()));
 			}
 		}
 		else {
 			$error = 'ArbitrageMatchNotFound';
 			return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => $error));
 		}
+	}
+
+	/**
+	 * @Secure(roles="ROLE_ARBITRE")
+	 */
+	public function hourAction($MatchID) {
+		$em = $this->getDoctrine()->getManager();
+		$Match = $em->find('UAMatchBundle:Match\matchs', $MatchID);
+		$form = $this 	->createFormBuilder($Match)
+						->add('horaire', 'datetime', array(
+													'input'  => 'datetime',
+													'date_widget' => 'single_text',
+													'time_widget' => 'single_text'))
+						->getForm();
+
+		//Handle the request
+		$request = $this->getRequest();
+		if($request->getMethod() == 'POST') {
+			$form->bind($request);
+			if($form->isValid()) {
+				$em->persist($Match);
+				$em->flush();
+
+				return $this->redirect($this->generateUrl('UAMatchBundle_ViewMatchforGame', array('id' => $Match->getGame()->getId())));
+			}
+		}
+
+		return $this->render('UAMatchBundle:Admin:generate.hour.html.twig', array('form' => $form->createView()));
 	}
 
 	/**
@@ -221,7 +275,7 @@ class AdminController extends Controller
 				$userManager = $this->container->get('fos_user.user_manager');
 				$user = $userManager->createUser();
 				$user->setUsername($Player->getUsername());
-				$user->setEmail( strtolower($Player->getUsername()) . "@devi.lan" );
+				$user->setEmail( strtolower(preg_replace("#[^a-zA-Z]#", "", $Player->getUsername())) . time() . "@devi.lan" );
 				$user->setPlainPassword($team->getPassword());
 				$userManager->updateUser($user);
 
@@ -300,7 +354,7 @@ class AdminController extends Controller
 																		array('id' => 'DESC'),
 																		5, ($page-1)*5);
 
-		$nbrTeams = $em->getRepository('UAMatchBundle:Match\team')->getCount(array($game));
+		$nbrTeams = $em->getRepository('UAMatchBundle:Match\team')->getCount($game ? array($game) : null);
 		$Games = $em->getRepository('UAMatchBundle:game')->findAll();
 
 		return $this->render('UAMatchBundle:Admin:team.html.twig', array('form' => $form->createView(), 

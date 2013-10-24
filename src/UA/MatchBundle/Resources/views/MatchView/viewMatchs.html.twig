@@ -1,37 +1,57 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - Voir les matchs{% endblock %}
+{% block title %}{{ parent() }} - {{'match.title'|trans}}{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-    	{% set poolBefore = 0 %}
-    	{% if Matchs != null %}
-			{% for match in Matchs %}
-				{% if match.TeamA.pool != poolBefore %}
-					{% if match.TeamA.pool != 1 %}</table>{% endif %}
-					<table class="matchPool">
-					<thead><tr><td colspan=5>Pool {{ match.TeamA.pool }}</td></tr></thead>
-					{% set poolBefore = match.TeamA.pool %}
+	<article class="col-lg-8 col-lg-offset-1">
+		{% set poolBefore = 0 %}
+		{% for match in Matchs if Matchs %}
+			<!--Close-->
+			{% if match.pool != poolBefore %}
+				{% if match.pool != 1 %}
+				</table>
+				</div>
 				{% endif %}
-		
-				<tr>
-					<td>{{ match.TeamA.name}}</td>
-					<td>{{ match.scoreA }}</td>
-					<td>{{ match.scoreB }}</td>
-					<td style="text-align: right;">{{ match.TeamB.name }}</td>
-					<td>
-						{% if is_granted('ROLE_ARBITRE') %}
-							<a href="{{ path('UAMatchBundle_Arbitrage', {'MatchID' : match.id}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
-						{% endif %}
-					</td>
-				</tr>
-			{% endfor %}
 
+				<div class="panel panel-default pull-left" style="margin-left: 5px;">
+					<div class="panel-heading">Pool {{ match.pool }}</div>
+						<table class="table">
+
+				{% set poolBefore = match.pool %}
+			{% endif %}
+				
+			<tr>
+				<td>{{ match.TeamA.name}}</td>
+				<td>{{ match.scoreA }}</td>
+				<td>{{ match.scoreB }}</td>
+				<td class="text-right">{{ match.TeamB.name }}</td>
+				<td class="text-right">
+					{% if is_granted('ROLE_ARBITRE') %}
+						<a href="{{ path('UAMatchBundle_hour', {'MatchID' : match.id}) }}" class="btn btn-xs btn-default">
+							<span class="glyphicon glyphicon-time"></span>
+						</a>
+						<a href="{{ path('UAMatchBundle_Arbitrage', {'MatchID' : match.id}) }}" class="btn btn-xs btn-default">
+							<span class="glyphicon glyphicon-check"></span>
+						</a>
+					{% endif %}
+				</td>
+			</tr>
+			{% if match.horaire %}
+				<tr>
+					{% set nbrDay = match.horaire|date('d') - date()|date('d') %}
+					<td colspan="5">{{ 'match.hour'|transchoice(nbrDay, {'%h%': match.horaire|date('H:i')}) }}</td>
+				</tr>	
+			{% endif %}
+
+			<!--Close last panel-->
+			{% if loop.index == Matchs|length %}
+				</table>
+			</div>
+			{% endif %}
 		{% else %}
 			<div class="alert alert-danger">{{ 'MatchNotExisting'|trans }}</div>
 			<a href="{{ path('UAMatchBundle_ViewGameSelect') }}" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>{{ 'MatchReturn'|trans }}</a>
-		{% endif %}
-    	</table>
+		{% endfor %}
 	</article>
 	{{ parent() }}
 {% endblock %}

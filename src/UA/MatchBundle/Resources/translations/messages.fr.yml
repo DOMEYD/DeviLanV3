@@ -9,7 +9,15 @@ breadcrumb:
     selectGame: "Sélection du jeu"
     pool: "Choix du nombre de pools"
     error: "Erreurs"
-generate : "Génération"
+    generate : "Génération"
+    hour: "Horaire"
+    score: "MAJ scores"
+
+#Tooltips
+tooltip:
+    teamAdd: "Ajouter une équipe..."
+    generate: "Génerer"
+    delete: "Supprimer"
 
 #Admin
 admin:
@@ -21,6 +29,11 @@ admin:
         label:
             nbrPlayerRequired: "Nombre de joueur necessaires :"
             generator: "Alghorythme de génération :"
+        table:
+            name: "Nom :"
+            generator: "Générateur"
+            nbrPlayer: "Requière"
+            action: "Actions"
     team:
         title: "Créer une équipe"
         input:
@@ -45,10 +58,15 @@ admin:
             alert: "Aucun jeux disponible ! Veuillez en ajouter !"
         pool:
             submit: "Génerer"
+        AdminReturn: "Retourner à l'Administration"
+    score:
+        title: "Mise à jour des scores"
+    match:
+        hour:
+            title: "Horaire du match"
     error:
         AdminReturn: "Retourner à l'Administration"
 gameSelectionTitle: "Veuillez choisir un jeu :"
-ArbitreTitle: "Mise à jour des scores"
 
 #team page
 team:
@@ -58,21 +76,23 @@ team:
         name: "Nom de l'équipe :"
         gameName: "Jeux"
 
-#Admin forms field
-MatchReturn: "Retourner à la selection du jeu"
+#Match Page
+match:
+    title: "Voir les matchs"
+    hour: "]-Inf,0[ Match déjà passé ... |{0} Match prévu aujourd'hui à %h%|{1} Match prévu demain à %h%|{2} Match prévu après-demain à %h%|]1,Inf[ Match prévu dans %count% jours à %h%"
 
 #Admin messages
 error:
     teamAlreadyExist: "Une team portant ce nom existe déjà pour le jeu sélectionné !"
+    MatchsAlreadyGenerate: "Les matchs ont déjà été générés"
+    MatchNotExisting: "Aucun match trouvé pour cet ID de jeu"
 BlankPicture: "Une image doit être spécifiée !"
 gameSuccess: "Le jeux a bien été créé !"
 nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."
 GenerateSuccessful: "<div class=\"alert alert-success\">La génération des matchs pour le jeu <strong>%game%</strong> s'est effectué avec succès !</div>"
 NotExistingStep: "L'étape spécifiée en paramètre n'existe pas !"
-MatchsAlreadyGenerate: "Les matchs ont déjà été générés"
 UnexpectedError: "Une erreur innatendu s'est produite !"
 ArbitrageMatchNotFound: "Le match demandé n'a pas été trouvé !"
-MatchNotExisting: "Aucun match trouvé pour cet ID de jeu"
 
 #Admin status
 yes: 'oui'

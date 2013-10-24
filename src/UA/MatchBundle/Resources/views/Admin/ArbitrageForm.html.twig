@@ -1,25 +1,27 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - {{ 'gameTitle'|trans}}{% endblock %}
+{% block title %}{{ parent() }} - {{ 'admin.score.title'|trans}}{% endblock %}
 
 {% block body %}
     <article class="col-lg-8 col-lg-offset-1">
 		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'admin'|trans }}</a></li>
-			<li class="active">{{ 'ArbitreTitle'|trans }}</li>
+			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+			<li class="active">{{ 'breadcrumb.score'|trans }}</li>
 		</ol>
-		<h2 style="text-align:center;">{{ 'ArbitreTitle'|trans }}</h2>
+
+		<h2 class="text-center">{{ 'admin.score.title'|trans }}</h2>
+
 		<form action="{{ path('UAMatchBundle_Arbitrage', {'MatchID' : Match.id}) }}" method="POST" id="ScoreForm" class="form-inline" role="form">
 			<div class="form-group">
-				<label for="sc1">{{ Match.TeamA.name }}</label>
-				<input type="number" name="sc1" id="sc1" class="form-control" value="{{ Match.scoreA }}" required autofocus />
+				<label for="{{form.scoreA.vars.id}}">{{ Match.TeamA.name }}</label>
+				{{ form_widget(form.scoreA, {'attr' : {'class' : 'form-control', 'autofocus' : 'autofocus'}})}}
 			</div>
 			<div class="form-group">
-				<label for="sc2">{{ Match.TeamB.name }}</label>	
-				<input type="number" name="sc2" id="sc2" class="form-control" value="{{ Match.scoreB }}" required />
+				<label for="{{form.scoreB.vars.id}}">{{ Match.TeamB.name }}</label>
+				{{ form_widget(form.scoreB, {'attr' : {'class' : 'form-control', 'autofocus' : 'autofocus'}})}}
 			</div>
-			<br /><br />
+			<br>
 			<div class="pull-right">
 				<a href="{{ path('UAMatchBundle_ViewMatchforGame', {'id' : Match.game.id}) }}" class="btn btn-danger">
 					<span class="glyphicon glyphicon-chevron-left "></span>

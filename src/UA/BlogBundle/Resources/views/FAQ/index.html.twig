@@ -1,0 +1,16 @@
+{% extends "UABlogBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Index{% endblock %}
+ 
+{% block body %}
+	<article class="col-lg-8 col-lg-offset-1">
+		{% for question in faq if faq %}
+			<p>
+				<strong>{{question.question}}</strong><br>
+				<em>{{question.reply}}</em>
+			</p>
+		{% else %}
+			<div class="alert alert-info">{{'error.faq.noQuestion'|trans}}</div>
+		{% endfor %}
+	</article>
+{% endblock %}

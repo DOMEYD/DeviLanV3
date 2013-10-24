@@ -68,17 +68,17 @@
 					<tr>
 						<td>
 							{% if page > 1 %}
-								<a href="{{ path('UAMatchAdmin_Team', {'page': page-1, 'game': gameSelected})}}">&#171;</a>
+								<a href="{{ path('UAMatchAdmin_Team', {'page': page-1, 'game': gameSelected ? gameSelected : null})}}" class="btn btn-sm btn-default">&#171;</a>
 							{% else %}
-								&#171;
+								<button class="btn btn-sm btn-default" disabled>&#171;</button>
 							{% endif %}
 						</td>
 						<td colspan="2"></td>
 						<td class="text-right">
 							{% if page < nbrPage %}
-								<a href="{{ path('UAMatchAdmin_Team', {'page': page+1, 'game': gameSelected})}}">&#187;</a>
+								<a href="{{ path('UAMatchAdmin_Team', {'page': page+1,  'game': gameSelected ?  gameSelected : null})}}" class="btn btn-sm btn-default">&#187;</a>
 							{% else %}
-								&#187;
+								<button class="btn btn-sm btn-default" disabled>&#187;</button>
 							{% endif %}
 						</td>
 					</tr>

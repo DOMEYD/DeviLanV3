@@ -5,10 +5,6 @@
 }
 
 /* heading */
-article {
-	border-right: 1px solid #bdc3c7;
-	border-left: 1px solid #bdc3c7;
-}
 header, nav {
 	width: 100%;
 	box-shadow: 0 3px 6px #AAA;
@@ -43,6 +39,10 @@ nav li a:hover {
 }
 
 /* Content */
+article {
+	border-right: 1px solid #bdc3c7;
+	border-left: 1px solid #bdc3c7;
+}
 section {
 	margin-top: 5px;
 }

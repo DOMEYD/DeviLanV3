@@ -40,21 +40,17 @@
 						<tr>
 							<td>
 								{% if pageActive > 1 %}
-									<a href="{{path('UAMatchBundle_viewTeam', {'game':gameSelect, 'page':pageActive-1})}}">
-										&#171;
-									</a>
+									<a href="{{ path('UAMatchBundle_viewTeam', {'page': pageActive-1, 'game': gameSelect ? gameSelect : null})}}" class="btn btn-sm btn-default">&#171;</a>
 								{% else %}
-									&#171;
+									<button class="btn btn-sm btn-default" disabled>&#171;</button>
 								{% endif %}
 							</td>
 							<td></td>
 							<td class="text-right">
 								{% if pageActive < nbrPage %}
-									<a href="{{path('UAMatchBundle_viewTeam', {'game':gameSelect, 'page':pageActive+1})}}">
-										&#187;
-									</a>
+									<a href="{{ path('UAMatchBundle_viewTeam', {'page': pageActive+1, 'game': gameSelect ? gameSelect : null})}}" class="btn btn-sm btn-default">&#187;</a>
 								{% else %}
-									&#187;
+									<button class="btn btn-sm btn-default" disabled>&#187;</button>
 								{% endif %}
 							</td>
 						</tr>

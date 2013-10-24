@@ -78,6 +78,11 @@ class matchs
         return $this->id;
     }
 
+    public function getPool() {
+        return $this->teamA->getPool();
+    }
+
+
     /**
      * Set scoreA
      *

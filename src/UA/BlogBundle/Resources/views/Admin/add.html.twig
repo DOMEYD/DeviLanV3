@@ -28,6 +28,7 @@
 		<br>
 		<!--Articles management-->
 		<table class="table table-hover">
+			{% if page is defined %}
 			<thead>
 				<tr>
 					<th>{{'admin.article.add.table.titre'|trans}}</th>
@@ -35,8 +36,9 @@
 					<th colspan="2">{{'admin.article.add.table.action'|trans}}</th>
 				</tr>
 			</thead>
-			{% for article in articles if articles %}
+			{% endif %}
 			<tbody>
+			{% for article in articles if articles %}
 				<tr>
 					<td>
 						<a href="{{path('UAblog_voir', {'slug' : article.slug})}}">
@@ -45,18 +47,18 @@
 					</td>
 					<td>{{ article.author }}</td>
 					<td>
-						<a href="{{ path('UAblog_modifier', { 'article' : article.id }) }}" class="ArticleModif">
+						<a rel="tooltip" href="{{ path('UAblog_modifier', { 'article' : article.id }) }}" class="ArticleModif" data-original-title="{{'tooltip.edit'|trans}}">
 							<span class="glyphicon glyphicon-edit"></span>
 						</a>
 					</td>
 					<td>
-						<a href="{{ path('UAblog_supprimer', { 'article' : article.id }) }}" class="ArticleDelete">
+						<a rel="tooltip" href="{{ path('UAblog_supprimer', { 'article' : article.id }) }}" class="ArticleDelete" data-original-title="{{'tooltip.delete'|trans}}">
 							<span class="glyphicon glyphicon-remove"></span>
 						</a>
 					</td>
 				</tr>
-			</tbody>
 			{% endfor %}
+			</tbody>
 			{% if page is defined %}
 			<tfoot>
 				<tr>
@@ -81,4 +83,15 @@
 		</table>
 	</article>
 	{{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
+	<script type="text/javascript">
+	$(function() {
+		$('a').tooltip();
+	})(jquery);
+	</script>
+	{{parent()}}
 {% endblock %}
