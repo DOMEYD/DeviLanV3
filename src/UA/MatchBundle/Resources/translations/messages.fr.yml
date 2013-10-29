@@ -18,6 +18,7 @@ tooltip:
     teamAdd: "Ajouter une équipe..."
     generate: "Génerer"
     delete: "Supprimer"
+    score: "Ajouter un score"
 
 #Admin
 admin:
@@ -33,6 +34,9 @@ admin:
             name: "Nom :"
             generator: "Générateur"
             nbrPlayer: "Requière"
+            required: "[0,1] %count% joueur / équipe | ]1,+Inf[ %count% joueurs / équipe"
+            available: "Disponible"
+            teams: "[0,1] %count% équipe | ]1,+Inf[ %count% équipes"
             action: "Actions"
     team:
         title: "Créer une équipe"
@@ -80,6 +84,7 @@ team:
 match:
     title: "Voir les matchs"
     hour: "]-Inf,0[ Match déjà passé ... |{0} Match prévu aujourd'hui à %h%|{1} Match prévu demain à %h%|{2} Match prévu après-demain à %h%|]1,Inf[ Match prévu dans %count% jours à %h%"
+    MatchReturn: "Retourner à la sélection du jeu"
 
 #Admin messages
 error:

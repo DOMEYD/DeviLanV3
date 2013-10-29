@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class gameRepository extends EntityRepository
 {
+	public function getCountTeam() {
+		$qb = $this ->createQueryBuilder('g');
+		$qb			->join('g.teams', 't')
+					->groupBy('t.game')
+					->select(array('g.id', $qb->expr()->count('t.id')))
+					->where('t.present = 1');
+
+		$table = array();
+		foreach ($qb->getQuery()->getResult() as $value) {
+			$table[$value['id']] = $value[1];
+		}
+
+		return $table;
+	}
 }

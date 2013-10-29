@@ -19,6 +19,7 @@
 			{{ form_widget(form.title, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.article.add.input.title'}}) }}
 			{{ form_errors(form.title) }}
 			<br>
+			{% include "::bbcode.html.twig" with {'textarea': form.content.vars.id} %}
 			{{ form_widget(form.content, {'attr' : {'class' : 'form-control', 'rows' : '5', 'placeholder' : 'admin.article.add.input.content'}})}}
 			{{ form_errors(form.content) }}
 			<br>

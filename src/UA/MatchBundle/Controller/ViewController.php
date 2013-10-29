@@ -17,8 +17,10 @@ class ViewController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		
 		$Matchs = $em->getRepository('UAMatchBundle:Match\matchs')->getWithPool($id);
+		$MatchsTree = $em->getRepository('UAMatchBundle:Match\matchs')->getwithTeams($id);
 		
-		return $this->render('UAMatchBundle:MatchView:viewMatchs.html.twig', array('Matchs' => $Matchs));
+		return $this->render('UAMatchBundle:MatchView:viewMatchs.html.twig', array(	'Matchs' => $Matchs,
+																					'Tree' => $MatchsTree));
 	}
 	
 	public function teamAction($game, $page) {

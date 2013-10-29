@@ -13,12 +13,26 @@ use Doctrine\ORM\EntityRepository;
 class matchsRepository extends EntityRepository
 {
 	public function getWithPool($game) {
-		$qb = $this	->createQueryBuilder('m')
-					->where('m.game=' . $game)
+		$qb = $this	->createQueryBuilder('m');
+		$qb			->where('m.game=' . $game)
+					->andWhere($qb->expr()->eq('m.step', '?1'))
+					->setParameter(1, 'pool')
 					->join('m.teamA', 'p')
 					->join('m.teamB', 'b')
 					->select(array('m', 'b', 'p'))
 					->orderBy('p.pool', 'ASC');
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getWithTeams($game) {
+		$qb = $this	->createQueryBuilder('m');
+		$qb			->where('m.game=' . $game)
+					->andWhere($qb->expr()->neq('m.step', '?1'))
+					->setParameter(1, 'pool')
+					->join('m.teamA', 'p')
+					->join('m.teamB', 'b')
+					->select(array('m', 'b', 'p'))
+					->orderBy('m.step', 'DESC');
 		return $qb->getQuery()->getResult();
 	}
 }

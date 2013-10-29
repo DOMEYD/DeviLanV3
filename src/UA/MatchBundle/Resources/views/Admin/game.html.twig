@@ -52,7 +52,7 @@
 					<span>Choisir une image...</span>
 					{{ form_widget(form.file) }}
 				</span>
-				<input type="submit" class="btn btn-default">
+				<input type="submit" class="btn btn-primary">
 			</span>
 			<div class="clearfix"></div>
 			{{ form_rest(form) }}
@@ -68,6 +68,7 @@
 						<th>{{'admin.game.table.name'|trans}}</th>
 						<th>{{'admin.game.table.generator'|trans}}</th>
 						<th>{{'admin.game.table.nbrPlayer'|trans}}</th>
+						<th>{{'admin.game.table.available'|trans}}</th>
 						<th class="text-right">{{'admin.game.table.action'|trans}}</th>
 					</tr>
 				</thead>
@@ -76,7 +77,8 @@
 						<td><img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"></td>
 						<td>{{game.name}}</td>
 						<td>{{game.generator}}</td>
-						<td>{{game.nbrPlayerRequired}}</td>
+						<td>{{'admin.game.table.required'|transchoice(game.nbrPlayerRequired)}}</td>
+						<td>{{'admin.game.table.teams'|transchoice(gameTeamCount[game.id])}}</td>
 						<td class="text-right">
 							<a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.teamAdd'|trans}}">
 								<span class="glyphicon glyphicon-user"></span>

@@ -1,0 +1,36 @@
+<div class="btn-group">
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[B]', '[/B]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-bold"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[I]', '[/I]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-italic"></span>
+	</button>
+</div>
+
+<div class="btn-group">
+	<button type="button" class="btn btn-default btn-sm" tabIndex="-1">
+		<span class="glyphicon glyphicon-picture"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" onclick="insertUrl('{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-link"></span>
+	</button>
+</div>
+
+<div class="btn-group">
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[left]', '[/left]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-align-left"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[center]', '[/center]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-align-center"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[right]', '[/right]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-align-right"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" onclick="insertion('[justify]', '[/justify]', '{{textarea}}');" tabIndex="-1">
+		<span class="glyphicon glyphicon-align-justify"></span>
+	</button>
+</div>
+
+{% javascripts 'js/insertTag.js' %}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}

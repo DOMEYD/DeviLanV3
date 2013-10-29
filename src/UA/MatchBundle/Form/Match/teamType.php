@@ -18,7 +18,8 @@ class teamType extends AbstractType
             ->add('name')
             ->add('game', 'entity',  array(
                                 'class' => 'UAMatchBundle:game',
-                                'property' => 'name'));
+                                'property' => 'name'
+                                ));
     }
 
     /**
