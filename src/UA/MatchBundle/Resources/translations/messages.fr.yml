@@ -20,6 +20,11 @@ tooltip:
     delete: "Supprimer"
     score: "Ajouter un score"
 
+header:
+    teams: "Equipes"
+    matchs: "Matchs"
+    admin: "Administration"
+
 #Admin
 admin:
     game:
@@ -34,7 +39,7 @@ admin:
             name: "Nom :"
             generator: "Générateur"
             nbrPlayer: "Requière"
-            required: "[0,1] %count% joueur / équipe | ]1,+Inf[ %count% joueurs / équipe"
+            required: "[0,1] %count% joueur par équipe | ]1,+Inf[ %count% joueurs par équipe"
             available: "Disponible"
             teams: "[0,1] %count% équipe | ]1,+Inf[ %count% équipes"
             action: "Actions"
@@ -46,7 +51,7 @@ admin:
             action: "Actions"
             playerName: "Nom du joueur :"
         valide: "Team validé"
-        playerAdd: "Ajout un joueur"
+        playerAdd: "Ajout de joueur"
         validate: "Valider"
         miss: "Manque"
         cancel: "Annuler"
@@ -56,25 +61,32 @@ admin:
         note:
             strong: "Note"
             content: "L'utilisateur peut utiliser son pseudo et le mot de passe affiché à gauche pour se connecter !"
+        deleteModalTitle: "Etes-vous sur de vouloir supprimer cette équipe ?"
+        discard: "Annuler"
+        modalDelete: "Supprimer ..."
     generate:
         select: 
-            title: "Choix du jeux :"
+            title: "Choix du jeux"
             alert: "Aucun jeux disponible ! Veuillez en ajouter !"
         pool:
             submit: "Génerer"
+            title: "Choix du nombre de pools"
         AdminReturn: "Retourner à l'Administration"
+        nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."
+        noteTwice: "<strong>Note :</strong> Pour un bon fonctionnement de la gestion des matchs, il est recommandé que le nombre ci-dessus soit multiple de 2 !"
+        success: "<div class=\"alert alert-success\">La génération des matchs pour le jeu <strong>%game%</strong> s'est effectué avec succès !</div>"
     score:
         title: "Mise à jour des scores"
     match:
         hour:
             title: "Horaire du match"
     error:
+        title: "Affichage d'une erreur"
         AdminReturn: "Retourner à l'Administration"
-gameSelectionTitle: "Veuillez choisir un jeu :"
 
 #team page
 team:
-    title: "Equipes"
+    title: "Voir les équipes"
     game: "Selection"
     table:
         name: "Nom de l'équipe :"
@@ -82,6 +94,7 @@ team:
 
 #Match Page
 match:
+    selectionTitle: "Selection du jeux"
     title: "Voir les matchs"
     hour: "]-Inf,0[ Match déjà passé ... |{0} Match prévu aujourd'hui à %h%|{1} Match prévu demain à %h%|{2} Match prévu après-demain à %h%|]1,Inf[ Match prévu dans %count% jours à %h%"
     MatchReturn: "Retourner à la sélection du jeu"
@@ -91,13 +104,12 @@ error:
     teamAlreadyExist: "Une team portant ce nom existe déjà pour le jeu sélectionné !"
     MatchsAlreadyGenerate: "Les matchs ont déjà été générés"
     MatchNotExisting: "Aucun match trouvé pour cet ID de jeu"
+    ArbitrageMatchNotFound: "Le match demandé n'a pas été trouvé !"
+    scoreCannotBeSame: "Les scores, hors matchs de pool, ne peuvent être égals..."
 BlankPicture: "Une image doit être spécifiée !"
 gameSuccess: "Le jeux a bien été créé !"
-nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."
-GenerateSuccessful: "<div class=\"alert alert-success\">La génération des matchs pour le jeu <strong>%game%</strong> s'est effectué avec succès !</div>"
 NotExistingStep: "L'étape spécifiée en paramètre n'existe pas !"
 UnexpectedError: "Une erreur innatendu s'est produite !"
-ArbitrageMatchNotFound: "Le match demandé n'a pas été trouvé !"
 
 #Admin status
 yes: 'oui'

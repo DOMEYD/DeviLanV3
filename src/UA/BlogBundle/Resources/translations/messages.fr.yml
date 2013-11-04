@@ -72,6 +72,12 @@ commentaire:
     input:
         comment: "Commenter..."
 
+blog:
+    h2: "Blog"
+    h3: "voir les articles"
+    article: "voir l'article..."
+    admin: "Administration"
+    faq: "F.A.Q."
 #error
 error:
     warning: "Attention !"

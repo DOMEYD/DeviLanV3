@@ -5,6 +5,7 @@ namespace UA\MatchBundle\Form\Match;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class teamType extends AbstractType
 {
@@ -18,7 +19,7 @@ class teamType extends AbstractType
             ->add('name')
             ->add('game', 'entity',  array(
                                 'class' => 'UAMatchBundle:game',
-                                'property' => 'name'
+                                'property' => 'name',
                                 ));
     }
 

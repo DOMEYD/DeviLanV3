@@ -1,76 +1,74 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
-{% block title %}{{ parent() }} - {{ 'playerAddTitle'|trans }}{% endblock %}
+{% block title %}{{ parent() }} - {{ 'admin.team.playerAdd'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.team.playerAdd'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li><a href="{{ path('UAMatchAdmin_Team') }}">{{ 'breadcrumb.team'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.playerAdd'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li><a href="{{ path('UAMatchAdmin_Team') }}">{{ 'breadcrumb.team'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.playerAdd'|trans }}</li>
+	</ol>
 
-		<div class="row">
-			<!--Team description-->
-			<div class="col-lg-5">
-				<h2>{{ teamInfo.name }}</h2>
-				<div id="TeamPassword">{{teamInfo.password}}</div>
-				<table class="table">
-				{% for player in Players %}
-					<tr>
-						<td>{{ player.username }}</td>
-						<td>
-							<a href="{{ path('UAMatchAdmin_PlayerDelete', {'id' : player.id})}}" class="PlayerDelete">
-								<span class="glyphicon glyphicon-remove"></span>
-							</a>
-						</td>
-					</tr>
-				{% endfor %}
-				</table>
-				<div class="row">
-					{% if Players|length >= teamInfo.game.nbrPlayerRequired %}
-						<a href="{{ path('UAMatchAdmin_TeamValide', {id : teamInfo.id}) }}" class="btn btn-success col-lg-4 col-lg-offset-1">
-							<span class="glyphicon glyphicon-ok"></span> {{ 'admin.team.validate'|trans }}
+	<div class="row">
+		<!--Team description-->
+		<div class="col-lg-5">
+			<h2>{{ teamInfo.name }}</h2>
+			<div id="TeamPassword">{{teamInfo.password}}</div>
+			<table class="table">
+			{% for player in Players %}
+				<tr>
+					<td>{{ player.username }}</td>
+					<td>
+						<a href="{{ path('UAMatchAdmin_PlayerDelete', {'id' : player.id})}}" class="PlayerDelete">
+							<span class="glyphicon glyphicon-remove"></span>
 						</a>
-					{% else %}
-						<button class="btn btn-primary col-lg-4 col-lg-offset-1 " disabled="disabled">
-							{{'admin.team.miss'|trans}} {{ teamInfo.game.nbrPlayerRequired - Players|length }}
-						</button>
-					{% endif %}	
-					<a href="{{ path('UAMatchAdmin_Team') }}" class="btn btn-danger col-lg-4 col-lg-offset-1">
-						<span class="glyphicon glyphicon-remove"></span> {{ 'admin.team.cancel'|trans }}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<div class="row">
+				{% if Players|length >= teamInfo.game.nbrPlayerRequired %}
+					<a href="{{ path('UAMatchAdmin_TeamValide', {id : teamInfo.id}) }}" class="btn btn-success col-lg-4 col-lg-offset-1">
+						<span class="glyphicon glyphicon-ok"></span> {{ 'admin.team.validate'|trans }}
 					</a>
-					<div class="text-center">
-						<a href="{{path('UAMatchAdmin_TeamValide', {id : teamInfo.id})}}" class="btn">
-							{{'admin.team.forceValide'|trans}}
-						</a>
-					</div>
-				</div>
-			</div>
-			<!--Form to add players-->
-			<div class="col-lg-7">
-				{% if Players|length != teamInfo.game.nbrPlayerRequired %}
-				<h2 class="text-center">{{ 'admin.team.playerAdd'|trans }}</h2>
-				<form method="POST" {{ form_enctype(form) }}>
-					<div class="input-group">
-						{{ form_widget(form.username, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.team.input.playerName'|trans,  'autofocus' : 'autofocus'}}) }}
-						<span class="input-group-btn">
-							<input type="submit" class="btn btn-default"/>
-						</span>
-					</div><br>
-					{{ form_rest(form) }}
-				</form>
 				{% else %}
-					<div class="alert alert-success">{{ 'admin.team.message.nbrPlayerComplete'|trans }}</div>
-				{% endif %}
-				<div class="alert alert-warning">
-					<strong>{{'admin.team.note.strong'|trans}} :</strong> {{'admin.team.note.content'|trans}}
+					<button class="btn btn-primary col-lg-4 col-lg-offset-1 " disabled="disabled">
+						{{'admin.team.miss'|trans}} {{ teamInfo.game.nbrPlayerRequired - Players|length }}
+					</button>
+				{% endif %}	
+				<a href="{{ path('UAMatchAdmin_Team') }}" class="btn btn-danger col-lg-4 col-lg-offset-1">
+					<span class="glyphicon glyphicon-remove"></span> {{ 'admin.team.cancel'|trans }}
+				</a>
+				<div class="text-center">
+					<a href="{{path('UAMatchAdmin_TeamValide', {id : teamInfo.id})}}" class="btn">
+						{{'admin.team.forceValide'|trans}}
+					</a>
 				</div>
 			</div>
 		</div>
-
-	</article>
-	
+		<!--Form to add players-->
+		<div class="col-lg-7">
+			{% if Players|length != teamInfo.game.nbrPlayerRequired %}
+			<h2 class="text-center">{{ 'admin.team.playerAdd'|trans }}</h2>
+			<form method="POST" {{ form_enctype(form) }}>
+				<div class="input-group">
+					{{ form_widget(form.username, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.team.input.playerName'|trans,  'autofocus' : 'autofocus'}}) }}
+					<span class="input-group-btn">
+						<input type="submit" class="btn btn-default"/>
+					</span>
+				</div><br>
+				{{ form_rest(form) }}
+			</form>
+			{% else %}
+				<div class="alert alert-success">{{ 'admin.team.message.nbrPlayerComplete'|trans }}</div>
+			{% endif %}
+			<div class="alert alert-warning">
+				<strong>{{'admin.team.note.strong'|trans}} :</strong> {{'admin.team.note.content'|trans}}
+			</div>
+		</div>
+	</div>
 	{{ parent() }}
 {% endblock %}

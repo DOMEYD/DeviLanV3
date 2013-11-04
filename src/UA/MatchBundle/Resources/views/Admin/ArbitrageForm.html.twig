@@ -1,35 +1,34 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{ 'admin.score.title'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.score.title'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.score'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.score'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{ 'admin.score.title'|trans }}</h2>
-
-		<form action="{{ path('UAMatchBundle_Arbitrage', {'MatchID' : Match.id}) }}" method="POST" id="ScoreForm" class="form-inline" role="form">
-			<div class="form-group">
-				<label for="{{form.scoreA.vars.id}}">{{ Match.TeamA.name }}</label>
-				{{ form_widget(form.scoreA, {'attr' : {'class' : 'form-control', 'autofocus' : 'autofocus'}})}}
-			</div>
-			<div class="form-group">
-				<label for="{{form.scoreB.vars.id}}">{{ Match.TeamB.name }}</label>
-				{{ form_widget(form.scoreB, {'attr' : {'class' : 'form-control'}})}}
-			</div>
-			<br>
-			<div class="pull-right">
-				<a href="{{ path('UAMatchBundle_ViewMatchforGame', {'id' : Match.game.id}) }}" class="btn btn-danger">
-					<span class="glyphicon glyphicon-chevron-left "></span>
-					{{ 'annuler'|trans }}
-				</a>
-				<input type="submit" class="btn btn-primary" />
-			</div>
-		</form>
-	</article>
+	<form action="{{ path('UAMatchBundle_Arbitrage', {'MatchID' : Match.id}) }}" method="POST" id="ScoreForm" class="form-inline" role="form">
+		<div class="form-group">
+			<label for="{{form.scoreA.vars.id}}">{{ Match.TeamA.name }}</label>
+			{{ form_widget(form.scoreA, {'attr' : {'class' : 'form-control', 'autofocus' : 'autofocus'}})}}
+		</div>
+		<div class="form-group">
+			<label for="{{form.scoreB.vars.id}}">{{ Match.TeamB.name }}</label>
+			{{ form_widget(form.scoreB, {'attr' : {'class' : 'form-control'}})}}
+		</div>
+		<br>
+		<div class="pull-right">
+			<a href="{{ path('UAMatchBundle_ViewMatchforGame', {'id' : Match.game.id}) }}" class="btn btn-danger">
+				<span class="glyphicon glyphicon-chevron-left "></span>
+				{{ 'annuler'|trans }}
+			</a>
+			<input type="submit" class="btn btn-primary" />
+		</div>
+	</form>
+	<div class="clearfix"></div>
 	{{ parent() }}
 {% endblock %}

@@ -1,0 +1,20 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{'admin.generate.successTitle'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'}} <small>{{'admin.generate.successTitle'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<ol class="breadcrumb">
+		<li><a href="UABlog_default">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="UAUser_admin">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.generate'|trans }}</li>
+	</ol>
+
+	{{ message|trans({'%game%' : game.name})|raw}}
+	<a href="{{ path('UAUser_admin') }}" class="btn btn-default">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+		{{ 'admin.generate.AdminReturn'|trans }}
+	</a>
+	{{ parent() }}
+{% endblock %}

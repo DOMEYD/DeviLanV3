@@ -15,52 +15,106 @@
 	<body>
 		<nav>
 			<ul>
-				<li><a href="{{ path('UAblog_default') }}"><span class="glyphicon glyphicon-home glyphicon-posrec"></span></a></li>
-				<li><a href="{{ path('UAMatchBundle_ViewGameSelect') }}">{{'menu.match'|trans|upper}}</a></li>
-				<li><a href="">{{'menu.rules'|trans|upper}}</a></li>
-				<li><a href="{{ path('UAMatchBundle_viewTeam') }}">{{'menu.teams'|trans|upper}}</a></li>
-				<li><a href="{{path('UAFAQ_voir')}}">{{'menu.faq'|trans|upper}}</a></li>
+				<li {% if menuActive is defined and menuActive == 'blog' %}class="active"{% endif %}>
+					<a href="{{ path('UAblog_default') }}">
+						<img src="{{asset('pictures/menu/home.png')}}" class="img-responsive" alt="Home">
+						<span>{{'tooltip.home'|trans}}</span>
+					</a>
+				</li>
+				<li {% if menuActive is defined and menuActive == 'matchs' %}class="active"{% endif %}>
+					<a href="{{ path('UAMatchBundle_ViewGameSelect') }}">
+						<img src="{{asset('pictures/menu/matchs.png')}}" class="img-responsive" alt="Matchs">
+						<span>{{'tooltip.matchs'|trans}}</span>
+					</a>
+				</li>
+				<li {% if menuActive is defined and menuActive == 'reglement' %}class="active"{% endif %}>
+					<a href="">
+						<img src="{{asset('pictures/menu/reglement.png')}}" class="img-responsive" alt="Reglement">
+						<span>{{'tooltip.reglement'|trans}}</span>
+					</a>
+				</li>
+				<li {% if menuActive is defined and menuActive == 'teams' %}class="active"{% endif %}>
+					<a href="{{ path('UAMatchBundle_viewTeam') }}">
+						<img src="{{asset('pictures/menu/teams.png')}}" class="img-responsive" alt="Teams">
+						<span>{{'tooltip.team'|trans}}</span>
+					</a>
+				</li>
+				<li {% if menuActive is defined and menuActive == 'faq' %}class="active"{% endif %}>
+					<a href="{{path('UAFAQ_voir')}}">
+						<img src="{{asset('pictures/menu/faq.png')}}" class="img-responsive" alt="F.A.Q.">
+						<span>{{'tooltip.faq'|trans}}</span>
+					</a>
+				</li>
+				{% if is_granted("ROLE_BLOGGER") or is_granted("ROLE_ARBITRE") %}
+					<li {% if menuActive is defined and menuActive == 'admin' %}class="active"{% endif %}>
+						<a href="{{ path('UAUser_admin') }}">
+							<img src="{{asset('pictures/menu/admin.png')}}" class="img-responsive" alt="Admin">
+							<span>{{'tooltip.admin'|trans}}</span>
+						</a>
+					</li>
+				{% endif %}
 			</ul>
 		</nav>
-		<section class="row">
-			{% block body %}
+		<header>
+			{% block headerTitle %}
 			{% endblock %}
 
-			<aside class="col-lg-2">
-				{% block aside %}
-					{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				<div id="loginInfo">
+					{{'adminBar.hello'|trans({pseudo: app.user.username})}}
+				</div>
 
-						<div class="panel panel-default">
-							<div class="panel-heading">{{'adminBar.hello'|trans}}, {{ app.user.username }}</div>
-							<div class="list-group">
-								<a href="{{ path('UAUser_admin') }}" class="list-group-item">{{'adminBar.administration'|trans}}</a>
-								<a href="{{ path('fos_user_security_logout') }}" class="list-group-item">{{'adminBar.logout'|trans}}</a>
-							</div>
-						</div>
-
-					{% else %}
-
-						<form action="{{ path('fos_user_security_check') }}" method="post" style="text-align:center;">
-							<label for="username">{{'adminBar.input.login'|trans}}</label>
-							<input type="text" id="username" name="_username" placeholder="{{'adminBar.input.login'}}" class="form-control" />
-
-							<label for="password">{{'adminBar.input.password'|trans}}</label>
-							<input type="password" id="password" name="_password" placeholder="{{'adminBar.input.password'|trans}}" class="form-control" />
-							<br />
-							<div class="btn-group">
-								<input type="submit" value="{{'adminBar.log'|trans}}" class="btn btn-default" />
-								<a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">{{'adminBar.register'|trans}}</a>
-							</div>
-						</form>
-
-					{% endif %}
+				<div id="logout">
+					<a href="{{ path('fos_user_security_logout') }}">
+						<img src="{{asset('pictures/logout.png')}}" alt="logout">
+					</a>
+				</div>
+			{% else %}
+				<div id="login">
+					<a href="{{path('fos_user_security_login')}}">
+						<img src="{{asset('pictures/login.png')}}" alt="login">
+					</a>
+				</div>
+			{% endif %}
+		</header>
+		<section>
+			<article>
+				{% block body %}
 				{% endblock %}
-			</aside>
+			</article>
+
+			{% block aside %}
+				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+				{% else %}
+
+					<form action="{{ path('fos_user_security_check') }}" method="post" style="text-align:center;">
+						<label for="username">{{'adminBar.input.login'|trans}}</label>
+						<input type="text" id="username" name="_username" placeholder="{{'adminBar.input.login'}}" class="form-control" />
+
+						<label for="password">{{'adminBar.input.password'|trans}}</label>
+						<input type="password" id="password" name="_password" placeholder="{{'adminBar.input.password'|trans}}" class="form-control" />
+						<br />
+						<div class="btn-group">
+							<input type="submit" value="{{'adminBar.log'|trans}}" class="btn btn-default" />
+							<a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">{{'adminBar.register'|trans}}</a>
+						</div>
+					</form>
+
+				{% endif %}
+			{% endblock %}
 		</section>
 		<footer>
 			{{ 'footer'|trans }}
 		</footer>
-
+		
+		<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+		<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('a').tooltip();
+		})(jquery);
+		</script>
 		{% block javascripts %}
 		
 		{% endblock %}

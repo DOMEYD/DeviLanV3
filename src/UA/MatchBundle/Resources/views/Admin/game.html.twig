@@ -1,100 +1,102 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{ 'admin.game.title'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.game.title'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-	<article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.game'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.game'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{ 'admin.game.title'|trans }}</h2>
+	{% if success %}
+		<div class="alert alert-success">{{ 'gameSuccess'|trans }}</div>
+	{% endif %}
 
-		{% if success %}
-			<div class="alert alert-success">{{ 'gameSuccess'|trans }}</div>
-		{% endif %}
+	{{ form_errors(form) }}
 
-		{{ form_errors(form) }}
-
-		<form method="POST" {{ form_enctype(form) }}>
-			<!--Name of the new game-->
-			<div class="row">
-				<div class="col-lg-2">
-					{{ form_widget(form.shortName, {'attr' : {	'class' : 'form-control', 'placeholder' : 'admin.game.input.abbr'|trans }} )}}
-				</div>
-				<div class="col-lg-10">
-					{{ form_widget(form.name, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.game.input.title'|trans }}) }}
-				</div>
+	<form method="POST" {{ form_enctype(form) }}>
+		<!--Name of the new game-->
+		<div class="row">
+			<div class="col-lg-2">
+				{{ form_widget(form.shortName, {'attr' : {	'class' : 'form-control', 'placeholder' : 'admin.game.input.abbr'|trans }} )}}
 			</div>
-			{{ form_errors(form.shortName) }}
-			{{ form_errors(form.name) }}
-			<br>
-			<!--Select the number of players-->
-			<div class="row">
-				{{form_label(form.nbrPlayerRequired, 'admin.game.label.nbrPlayerRequired'|trans, {'label_attr' : {'class' : 'col-lg-10 control-label'}})}}
-				<div class="col-lg-2">{{ form_widget(form.nbrPlayerRequired, {'attr' : {'class' : 'form-control'}})}}</div>
-				<div class="col-lg-12">{{ form_errors(form.nbrPlayerRequired) }}</div>
+			<div class="col-lg-10">
+				{{ form_widget(form.name, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.game.input.title'|trans }}) }}
 			</div>
-			<!--Select the generator-->
-			<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-				{{form_label(form.generator, 'admin.game.label.generator'|trans, {'label_attr' : {'class' : 'col-lg-8 control-label'}})}}
-				<div class="col-lg-4">{{ form_widget(form.generator, {'attr' : {'class' : 'form-control'}})}}</div>
-				<div class="col-lg-12">{{ form_errors(form.generator) }}</div>
-			</div>
-			<!--File add and submit input-->
-			<br>
-			{{ form_errors(form.file) }}
-			<span class="pull-right">
-				<span class="fileinput-button btn btn-success">
-					<span class="glyphicon glyphicon-picture"></span>
-					<span>Choisir une image...</span>
-					{{ form_widget(form.file) }}
-				</span>
-				<input type="submit" class="btn btn-primary">
-			</span>
-			<div class="clearfix"></div>
-			{{ form_rest(form) }}
-		</form>
-
-		<div class="clearfix"></div>
-		
-		<div id="GamesGestion">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>{{'admin.game.table.name'|trans}}</th>
-						<th>{{'admin.game.table.generator'|trans}}</th>
-						<th>{{'admin.game.table.nbrPlayer'|trans}}</th>
-						<th>{{'admin.game.table.available'|trans}}</th>
-						<th class="text-right">{{'admin.game.table.action'|trans}}</th>
-					</tr>
-				</thead>
-				{% for game in games %}
-					<tr>
-						<td><img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"></td>
-						<td>{{game.name}}</td>
-						<td>{{game.generator}}</td>
-						<td>{{'admin.game.table.required'|transchoice(game.nbrPlayerRequired)}}</td>
-						<td>{{'admin.game.table.teams'|transchoice(gameTeamCount[game.id])}}</td>
-						<td class="text-right">
-							<a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.teamAdd'|trans}}">
-								<span class="glyphicon glyphicon-user"></span>
-							</a>
-							<a href="{{path('UAMatchAdmin_Generate', {'etape': 1, 'gameID': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.generate'|trans}}">
-								<span class="glyphicon glyphicon-cog"></span>
-							</a>
-							<a href="{{ path('UAMatchAdmin_GameDelete', {'gameId' : game.id}) }}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.delete'|trans}}">
-								<span class="glyphicon glyphicon-remove"></span>
-							</a>
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
 		</div>
-	</article>
+		{{ form_errors(form.shortName) }}
+		{{ form_errors(form.name) }}
+		<br>
+		<!--Select the number of players-->
+		<div class="row">
+			{{form_label(form.nbrPlayerRequired, 'admin.game.label.nbrPlayerRequired'|trans, {'label_attr' : {'class' : 'col-lg-10 control-label'}})}}
+			<div class="col-lg-2">{{ form_widget(form.nbrPlayerRequired, {'attr' : {'class' : 'form-control'}})}}</div>
+			<div class="col-lg-12">{{ form_errors(form.nbrPlayerRequired) }}</div>
+		</div>
+		<!--Select the generator-->
+		<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+			{{form_label(form.generator, 'admin.game.label.generator'|trans, {'label_attr' : {'class' : 'col-lg-8 control-label'}})}}
+			<div class="col-lg-4">{{ form_widget(form.generator, {'attr' : {'class' : 'form-control'}})}}</div>
+			<div class="col-lg-12">{{ form_errors(form.generator) }}</div>
+		</div>
+		<!--File add and submit input-->
+		<br>
+		{{ form_errors(form.file) }}
+		<span class="pull-right">
+			<span class="fileinput-button btn btn-success">
+				<span class="glyphicon glyphicon-picture"></span>
+				<span>Choisir une image...</span>
+				{{ form_widget(form.file) }}
+			</span>
+			<input type="submit" class="btn btn-primary">
+		</span>
+		<div class="clearfix"></div>
+		{{ form_rest(form) }}
+	</form>
+
+	<div class="clearfix"></div>
+	
+	<div id="GamesGestion">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>{{'admin.game.table.name'|trans}}</th>
+					<th>{{'admin.game.table.generator'|trans}}</th>
+					<th>{{'admin.game.table.nbrPlayer'|trans}}</th>
+					<th>{{'admin.game.table.available'|trans}}</th>
+					<th class="text-right">{{'admin.game.table.action'|trans}}</th>
+				</tr>
+			</thead>
+			{% for game in games %}
+				<tr>
+					<td><img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"></td>
+					<td>{{game.name}}</td>
+					<td>{{game.generator}}</td>
+					<td>{{'admin.game.table.required'|transchoice(game.nbrPlayerRequired)}}</td>
+					{% if gameTeamCount[game.id] is defined %}
+						<td>{{'admin.game.table.teams'|transchoice(gameTeamCount[game.id])}}</td>
+					{% else %}
+						<td>{{'admin.game.table.teams'|transchoice(0)}}</td>
+					{% endif %}
+					<td class="text-right">
+						<a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.teamAdd'|trans}}">
+							<span class="glyphicon glyphicon-user"></span>
+						</a>
+						<a href="{{path('UAMatchAdmin_Generate', {'etape': 1, 'gameID': game.id})}}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.generate'|trans}}">
+							<span class="glyphicon glyphicon-cog"></span>
+						</a>
+						<a href="{{ path('UAMatchAdmin_GameDelete', {'gameId' : game.id}) }}" class="btn btn-xs btn-default" data-original-title="{{'tooltip.delete'|trans}}">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
 	{{ parent() }}
 {% endblock %}
 

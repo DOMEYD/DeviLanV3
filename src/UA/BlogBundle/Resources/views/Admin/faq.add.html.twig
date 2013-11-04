@@ -1,62 +1,60 @@
 {% extends "UABlogBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{'admin.faq.add.title'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'blog.admin'|trans}} <small>{{'admin.faq.add.title'|trans}}</small></h3>{% endblock %}
  
 {% block body %}
-	<article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.add'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.add'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{'admin.faq.add.title'|trans}}</h2>
-
-		<form method="POST" {{form_enctype(form)}}>
-			{{form_errors(form)}}
-			<div class="input-group">
-				<label for="{{form.question.vars.id}}" class="input-group-addon">{{'admin.faq.input.question'|trans}}</label>
-				{{form_widget(form.question, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.faq.input.questionPlaceholder'|trans}})}}
-				{{form_errors(form.question)}}
-			</div>
-			<div class="input-group">
-				<label for="{{form.reply.vars.id}}" class="input-group-addon">{{'admin.faq.input.reply'|trans}}</label>
-				{{form_widget(form.reply, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.faq.input.replyPlaceholder'|trans}})}}
-				{{form_errors(form.reply)}}
-			</div>
-			<br>
-			<input type="submit" class="btn btn-primary" value="{{'admin.faq.input.add'|trans}}">
-			{{form_rest(form)}}
-		</form>
+	<form method="POST" {{form_enctype(form)}}>
+		{{form_errors(form)}}
+		<div class="input-group">
+			<label for="{{form.question.vars.id}}" class="input-group-addon">{{'admin.faq.input.question'|trans}}</label>
+			{{form_widget(form.question, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.faq.input.questionPlaceholder'|trans}})}}
+			{{form_errors(form.question)}}
+		</div>
+		<div class="input-group">
+			<label for="{{form.reply.vars.id}}" class="input-group-addon">{{'admin.faq.input.reply'|trans}}</label>
+			{{form_widget(form.reply, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.faq.input.replyPlaceholder'|trans}})}}
+			{{form_errors(form.reply)}}
+		</div>
 		<br>
-		{% if faq %}
-			<table class="table table-hover">
-				<thead>
+		<input type="submit" class="btn btn-primary" value="{{'admin.faq.input.add'|trans}}">
+		{{form_rest(form)}}
+	</form>
+	<br>
+	{% if faq %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>{{'admin.faq.add.table.question'|trans}}</th>
+					<th>{{'admin.faq.add.table.reply'|trans}}</th>
+					<th>{{'admin.faq.add.table.action'|trans}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in faq if faq %}
 					<tr>
-						<th>{{'admin.faq.add.table.question'|trans}}</th>
-						<th>{{'admin.faq.add.table.reply'|trans}}</th>
-						<th>{{'admin.faq.add.table.action'|trans}}</th>
+						<td>{{item.question}}</td>
+						<td>{{item.reply}}</td>
+						<td>
+							<a href="{{path('UAFAQ_add', {'id':item.id})}}" class="btn btn-xs btn-default">
+								<span class="glyphicon glyphicon-edit"></span>
+							</a>
+							<a href="{{path('UAFAQ_delete', {'id':item.id})}}" class="btn btn-xs btn-default">
+								<span class="glyphicon glyphicon-remove"></span>
+							</a>
+						</td>
 					</tr>
-				</thead>
-				<tbody>
-					{% for item in faq if faq %}
-						<tr>
-							<td>{{item.question}}</td>
-							<td>{{item.reply}}</td>
-							<td>
-								<a href="{{path('UAFAQ_add', {'id':item.id})}}" class="btn btn-xs btn-default">
-									<span class="glyphicon glyphicon-edit"></span>
-								</a>
-								<a href="{{path('UAFAQ_delete', {'id':item.id})}}" class="btn btn-xs btn-default">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		{% else %}
-			<div class="alert alert-warning">{{'admin.faq.noFAQ'|trans}}</div>
-		{% endif %}
-	</article>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<div class="alert alert-warning">{{'admin.faq.noFAQ'|trans}}</div>
+	{% endif %}
 {% endblock %}

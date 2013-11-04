@@ -96,8 +96,8 @@ class AdminController extends Controller
 				}
 			}
 			$em->flush();
-			return $this->render('UAMatchBundle:Admin:generation.html.twig', array(	'message' => 'GenerateSuccessful', 
-																					'game' => $Teams[0]->getGame()));
+			return $this->render('UAMatchBundle:Admin:generate.final.html.twig', array(	'message' => 'admin.generate.success', 
+																						'game' => $Teams[0]->getGame()));
 		}
 
 		/* Gestion of errors */
@@ -129,10 +129,19 @@ class AdminController extends Controller
 			if($this->getRequest()->getMethod() == 'POST') {
 				/* Update the scores */
 				$form->bind($this->getRequest());
+				if($Match->getStep() != 'Pool') {
+					if($Match->getScoreA() == $Match->getScoreB()) {
+						$error = 'error.scoreCannotBeSame';
+						return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => $error));
+					}
+				}
 				$em->persist($Match);
 				$em->flush();
 
-				/* Found actual step */
+				/*
+				 * Found acctual step
+				 * step ; braket ; id
+				 */
 				$Step = explode(';', $Match->getStep());
 
 				/*
@@ -202,7 +211,7 @@ class AdminController extends Controller
 
 						/* Create new matchs */
 						$i = 1;
-						foreach ($winnerTable as $keyP => $value) {
+						foreach ($winnerTable as $keyP => $value) { //WINNER
 							foreach ($value as $key => $winner) {
 								if($i <= $nbrTeamAllow/2) {
 									$matchs[$i] = new matchs();
@@ -216,46 +225,83 @@ class AdminController extends Controller
 								$i++;
 							}
 						}
+						foreach ($looserTable as $keyP => $value) { //LOOSER
+							foreach ($value as $key => $looser) {
+								$matchs[$i] = new matchs();
+								$matchs[$i]->setTeamA($looser[1]);
+								$matchs[$i]->setStep($nbrTeamAllow.';L;'.($i-$nbrTeamAllow));
+								$matchs[$i]->setGame($Match->getGame());
+								$i++;
+							}
+						}
 
+						/* Save new matchs */
 						foreach ($matchs as $match) {
 							$em->persist($match);
 						}
 						$em->flush();
-
-						/* DEBUG */
-						print_r($nbrTeamAllow.' : '.$NbrTurn. '<br>');
-						foreach ($looserTable as $keyP => $pool) {
-							print_r('<strong>'. $keyP. '</strong><br>');
-							foreach ($pool as $key => $value) {
-								print_r($key. ' : '.$value[0].'<br>');
-							}
-						}
-						return ;
 					}
 				}
 				elseif($Step[0] != 2) {
+					/* Management of continuation in braket */
+					
+					//Test if a match already exist to winner
 					$ContinuationMatch = $em->getRepository('UAMatchBundle:Match\matchs')->findOneBy(array(	'game' => $Match->getGame(), 
-																											'scoreB' => null, 
+																											'teamB' => null, 
 																											'step' => ($Step[0]/2). ';' . $Step[1] . ';' . ceil($Step[2]/2)));
+					
 					$Match->getScoreA() > $Match->getScoreB() ? $eqW = $Match->getTeamA() : $eqW = $Match->getTeamB();
+
 					if(count($ContinuationMatch) > 0) {
 						$ContinuationMatch->setTeamB($eqW);
 					} else {
 						$ContinuationMatch = new Matchs();
 						$ContinuationMatch->setGame($Match->getGame());
 						$ContinuationMatch->setTeamA($eqW);
-						$ContinuationMatch->setStep(($Step[0]/2). ';' . $Step[1] . ';' . ceil($Step[2]/2));
-						
+						$ContinuationMatch->setStep(($Step[0]/2). ';' . $Step[1] . ';' . ceil($Step[2]/2));	
 					}
 					$em->persist($ContinuationMatch);
+
+					/* Management continuation if braquet = W */
+					if($Step[1] = 'W'){
+						$Match->getScoreA() < $Match->getScoreB() ? $eqL = $Match->getTeamA() : $eqL = $Match->getTeamB();
+						$looserContinuation = $em 	->getRepository('UAMatchBundle:Match\matchs')
+													->findOneBy(array(	'game' => $Match->getGame(), 
+																		'teamB' => null, 
+																		'step' => $Step[0]. ';L;' . ceil($Step[2])));
+						if(count($looserContinuation)) {
+							$looserContinuation->setTeamB($eqL);
+						} else {
+							$looserContinuation = new Matchs();
+							$looserContinuation->setGame($Match->getGame());
+							$looserContinuation->setTeamA($eqL);
+							$looserContinuation->setStep($Step[0]. ';L;' . ceil($Step[2]));	
+						}
+						$em->persist($looserContinuation);
+					}
+
 					$em->flush();
 				}
 				elseif($Step[0] == 2) {
 					//FINAL
+					$MatchExist = $em 	->getRepository('UAMatchBundle:Match\matchs')
+										->findOneBy(array(	'game' => $Match->getGame(),
+															'teamB' => null,
+															'step' => '1;F;1'));
+					$Match->getScoreA() > $Match->getScoreB() ? $eqW = $Match->getTeamA() : $eqW = $Match->getTeamB();
+					if(count($MatchExist)) {
+						$MatchExist->setTeamB($eqW);
+					} else {
+						$MatchExist = new Matchs();
+						$MatchExist->setGame($Match->getGame());
+						$MatchExist->setTeamA($eqW);
+						$MatchExist->setStep('1;F;1');	
+					}
 				}
 				else {
 					//WINNER IS ... !
 				}
+
 				return $this->redirect($this->generateUrl('UAMatchBundle_ViewMatchforGame', array('id' => $Match->getGame()->getId())));
 			}
 			else {
@@ -264,7 +310,7 @@ class AdminController extends Controller
 			}
 		}
 		else {
-			$error = 'ArbitrageMatchNotFound';
+			$error = 'error.ArbitrageMatchNotFound';
 			return $this->render('UAMatchBundle:Admin:error.html.twig', array('Error' => $error));
 		}
 	}

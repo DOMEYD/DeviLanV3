@@ -55,7 +55,7 @@ class matchs
     private $step;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\game")
+     * @ORM\ManyToOne(targetEntity="UA\MatchBundle\Entity\game", inversedBy="matchs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $game;

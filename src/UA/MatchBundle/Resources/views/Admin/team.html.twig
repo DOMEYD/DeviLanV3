@@ -1,96 +1,114 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{ 'admin.team.title'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.team.title'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.team'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.team'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{ 'admin.team.title'|trans }}</h2>
+	<form method="POST" {{ form_enctype(form) }}>
+		{{ form_widget(form.name, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.team.input.name'|trans,  'autofocus' : 'autofocus'}}) }}
+		{{ form_errors(form.name) }}
+		<br>
+		{{ form_widget(form.game, {'attr' : {'class' : 'form-control'}})}}
+		{{ form_errors(form.game) }}
+		<br>
+		{{ form_rest(form) }}
+		<input type="submit" class="btn btn-default"/>
+	</form>
+	<hr>
+	{% if Teams %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>{{ 'admin.team.input.name'|trans }}</th>
+					<th>
+						{{ 'admin.team.input.game'|trans }}
+						<div class="btn-group">
+							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								{% for game in games %}
+									<li><a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}">{{game.name}}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</th>
+					<th colspan="2" class="text-center">{{ 'admin.team.input.action'|trans }}</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for team in Teams %}
+				<tr>
+					<td>{{team.name}}</td>
+					<td>{{team.game.name}}</td>
+					<td class="text-center">
+						{% if team.present == 'True' %}
+							<span class="glyphicon glyphicon-ok" style="color: #2ecc71;"></span>
+							<span style="color: #2ecc71;">{{ 'admin.team.valide'|trans|upper }}</a>
+						{% else %}
+							<a href="{{ path('UAMatchAdmin_PlayerAdd', {id: team.id}) }}" class="PlayerAdd">
+								<span class="glyphicon glyphicon-plus-sign"></span>
+								<span class="masque">{{ 'admin.team.playerAdd'|trans }}</span>
+							</a>
+						{% endif %}
+					</td>
+					<td>
+						<a href="{{ path('UAMatchAdmin_TeamDelete', {id: team.id}) }}" class="delete" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></a>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>
+						{% if page > 1 %}
+							<a href="{{ path('UAMatchAdmin_Team', {'page': page-1, 'game': gameSelected ? gameSelected : null})}}" class="btn btn-sm btn-default">&#171;</a>
+						{% else %}
+							<button class="btn btn-sm btn-default" disabled>&#171;</button>
+						{% endif %}
+					</td>
+					<td colspan="2"></td>
+					<td class="text-right">
+						{% if page < nbrPage %}
+							<a href="{{ path('UAMatchAdmin_Team', {'page': page+1,  'game': gameSelected ?  gameSelected : null})}}" class="btn btn-sm btn-default">&#187;</a>
+						{% else %}
+							<button class="btn btn-sm btn-default" disabled>&#187;</button>
+						{% endif %}
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	{% endif %}
 
-		<form method="POST" {{ form_enctype(form) }}>
-			{{ form_widget(form.name, {'attr' : {'class' : 'form-control', 'placeholder' : 'admin.team.input.name'|trans,  'autofocus' : 'autofocus'}}) }}
-			{{ form_errors(form.name) }}
-			<br>
-			{{ form_widget(form.game, {'attr' : {'class' : 'form-control'}})}}
-			{{ form_errors(form.game) }}
-			<br>
-			{{ form_rest(form) }}
-		    <input type="submit" class="btn btn-default"/>
-		</form>
-		<hr>
-		{% if Teams %}
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>{{ 'admin.team.input.name'|trans }}</th>
-						<th>
-							{{ 'admin.team.input.game'|trans }}
-							<div class="btn-group">
-								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									{% for game in games %}
-										<li><a href="{{path('UAMatchAdmin_Team', {'game': game.id})}}">{{game.name}}</a></li>
-									{% endfor %}
-								</ul>
-							</div>
-						</th>
-						<th colspan="2" class="text-center">{{ 'admin.team.input.action'|trans }}</th>
-					</tr>
-				</thead>
-				<tbody>
-				{% for team in Teams %}
-					<tr>
-						<td>{{team.name}}</td>
-						<td>{{team.game.name}}</td>
-						<td class="text-center">
-							{% if team.present == 'True' %}
-								<span class="glyphicon glyphicon-ok" style="color: #2ecc71;"></span>
-								<span style="color: #2ecc71;">{{ 'admin.team.valide'|trans|upper }}</a>
-							{% else %}
-								<a href="{{ path('UAMatchAdmin_PlayerAdd', {id: team.id}) }}" class="PlayerAdd">
-									<span class="glyphicon glyphicon-plus-sign"></span>
-									<span class="masque">{{ 'admin.team.playerAdd'|trans }}</span>
-								</a>
-							{% endif %}
-						</td>
-						<td><a href="{{ path('UAMatchAdmin_TeamDelete', {id: team.id}) }}" class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
-					</tr>
-				{% endfor %}
-				</tbody>
-				<tfoot>
-					<tr>
-						<td>
-							{% if page > 1 %}
-								<a href="{{ path('UAMatchAdmin_Team', {'page': page-1, 'game': gameSelected ? gameSelected : null})}}" class="btn btn-sm btn-default">&#171;</a>
-							{% else %}
-								<button class="btn btn-sm btn-default" disabled>&#171;</button>
-							{% endif %}
-						</td>
-						<td colspan="2"></td>
-						<td class="text-right">
-							{% if page < nbrPage %}
-								<a href="{{ path('UAMatchAdmin_Team', {'page': page+1,  'game': gameSelected ?  gameSelected : null})}}" class="btn btn-sm btn-default">&#187;</a>
-							{% else %}
-								<button class="btn btn-sm btn-default" disabled>&#187;</button>
-							{% endif %}
-						</td>
-					</tr>
-				</tfoot>
-			</table>
-		{% endif %}
-	</article>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">{{'admin.team.deleteModalTitle'|trans}}</h4>
+				</div>
+				<div class="modal-body">
+				</div>	
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{'admin.team.discard'|trans}}</button>
+					<button type="button" class="btn btn-danger">{{'admin.team.modalDelete'|trans}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	{{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
 	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/dropdown.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/modal.js')}}"></script>
 	{{parent()}}
 {% endblock %}

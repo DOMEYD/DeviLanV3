@@ -1,21 +1,19 @@
 {% extends "UABlogBundle::layout.html.twig" %}
-
+{% trans_default_domain 'FOSUserBundle' %}
 {% block body %}
-	{# S'il y a une erreur, on l'affiche dans un joli cadre #}
-
 	{% if error %}
 		<div class="alert alert-error">{{ error.message }}</div>
 	{% endif %}
 
 	<form action="{{ path('fos_user_security_check') }}" method="post" style="width:20%;margin:auto;">
 		<label for="username">{{'security.login.username'|trans}}</label>
-		<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{'security.login.username'|trans}}" class="form-control" />
+		<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{'security.login.username'|trans}}" class="form-control">
 
 		<label for="password">{{'security.login.password'|trans}}</label>
-		<input type="password" id="password" name="_password" placeholder="{{'security.login.password'|trans}}" class="form-control" />
+		<input type="password" id="password" name="_password" placeholder="{{'security.login.password'|trans}}" class="form-control">
 		<br />
 
-		<input type="checkbox" id="remember_me" name="_remember_me" checked />
+		<input type="checkbox" id="remember_me" name="_remember_me" checked>
 		<label for="remember_me">{{'security.login.remember_me'|trans}}</label>
     	<br />
 		<input type="submit" value="{{'security.login.submit'|trans}}" class="btn btn-default" />

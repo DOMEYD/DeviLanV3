@@ -1,20 +1,20 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
-{% block title %}{{ parent() }} - Ajouter un article{% endblock %}
+{% block title %}{{ parent() }} - {{'admin.error.title'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{'admin.error.title'|trans}}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="UABlog_default">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="UAUser_admin">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.error'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="UABlog_default">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="UAUser_admin">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.error'|trans }}</li>
+	</ol>
 
-		<div class="alert alert-error">{{ ('error.' ~ Error)|trans }}</div>
-		<a href="{{ app.request.server.get('HTTP_REFERER') }}" class="btn btn-default">
-			<span class="glyphicon glyphicon-chevron-left"></span>
-			{{ 'admin.error.AdminReturn'|trans }}
-		</a>
-	</article>
+	<div class="alert alert-danger">{{ ('error.' ~ Error)|trans }}</div>
+	<a href="{{ app.request.server.get('HTTP_REFERER') }}" class="btn btn-default">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+		{{ 'admin.error.AdminReturn'|trans }}
+	</a>
 	{{ parent() }}
 {% endblock %}

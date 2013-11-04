@@ -1,45 +1,43 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
-{% block title %}{{ parent() }} - {{ 'playerAddTitle'|trans }}{% endblock %}
+{% block title %}{{ parent() }} - {{ 'admin.team.playerAdd'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.team.playerAdd'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li><a href="{{ path('UAMatchAdmin_Team') }}">{{ 'breadcrumb.team'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.playerAdd'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li><a href="{{ path('UAMatchAdmin_Team') }}">{{ 'breadcrumb.team'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.playerAdd'|trans }}</li>
+	</ol>
 
-		<div class="row">
-			<!--Team description-->
-			<div class="col-lg-5">
-				<h2>{{ player.name }}</h2>
-				<div id="TeamPassword">{{player.password}}</div>
-				<table class="table">
-					<tr>
-						<td>{{player.name}}</td>
-					</tr>
-				</table>
-				<div class="row">
-					<a href="{{ path('UAMatchAdmin_TeamValide', {id : player.id}) }}" class="btn btn-success col-lg-4 col-lg-offset-1">
-						<span class="glyphicon glyphicon-ok"></span> {{ 'admin.team.validate'|trans }}
-					</a>
-					<a href="{{ path('UAMatchAdmin_Team') }}" class="btn btn-danger col-lg-4 col-lg-offset-1">
-						<span class="glyphicon glyphicon-remove"></span> {{ 'admin.team.cancel'|trans }}
-					</a>
-				</div>
-			</div>
-			<!--Form to add players-->
-			<div class="col-lg-7">
-				<div class="alert alert-success">{{ 'admin.team.message.nbrPlayerComplete'|trans }}</div>
-				<div class="alert alert-warning">
-					<strong>{{'admin.team.note.strong'|trans}} :</strong> {{'admin.team.note.content'|trans}}
-				</div>
+	<div class="row">
+		<!--Team description-->
+		<div class="col-lg-5">
+			<h2>{{ player.name }}</h2>
+			<div id="TeamPassword">{{player.password}}</div>
+			<table class="table">
+				<tr>
+					<td>{{player.name}}</td>
+				</tr>
+			</table>
+			<div class="row">
+				<a href="{{ path('UAMatchAdmin_TeamValide', {id : player.id}) }}" class="btn btn-success col-lg-4 col-lg-offset-1">
+					<span class="glyphicon glyphicon-ok"></span> {{ 'admin.team.validate'|trans }}
+				</a>
+				<a href="{{ path('UAMatchAdmin_Team') }}" class="btn btn-danger col-lg-4 col-lg-offset-1">
+					<span class="glyphicon glyphicon-remove"></span> {{ 'admin.team.cancel'|trans }}
+				</a>
 			</div>
 		</div>
-
-	</article>
-	
+		<!--Form to add players-->
+		<div class="col-lg-7">
+			<div class="alert alert-success">{{ 'admin.team.message.nbrPlayerComplete'|trans }}</div>
+			<div class="alert alert-warning">
+				<strong>{{'admin.team.note.strong'|trans}} :</strong> {{'admin.team.note.content'|trans}}
+			</div>
+		</div>
+	</div>	
 	{{ parent() }}
 {% endblock %}

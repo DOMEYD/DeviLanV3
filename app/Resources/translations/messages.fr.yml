@@ -1,11 +1,5 @@
-menu:
-    match: "match"
-    rules: "règlement"
-    teams: "équipes"
-    faq: "F.A.Q."
-
 adminBar:
-    hello: "Bonjour"
+    hello: "Bonjour pseudo,"
     administration: "Administration"
     logout: "Déconnexion"
     input:
@@ -13,5 +7,13 @@ adminBar:
         password: "Mot de passe :"
     log: "Connexion"
     register: "Inscription"
+
+tooltip:
+    home: "Acceuil"
+    matchs: "Matchs"
+    reglement: "Règlement"
+    team: "Equipes"
+    faq: "F.A.Q."
+    admin: "Admin"
 
 footer: "Site créé par DOMEY Dimitri | v3.0.3 | 2013"

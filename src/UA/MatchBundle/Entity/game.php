@@ -71,6 +71,11 @@ class game
      */
     private $teams;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UA\MatchBundle\Entity\Match\matchs", mappedBy="game")
+     */
+    private $matchs;
+
     public function setFile($file){
         $this->file = $file;
     
@@ -261,5 +266,38 @@ class game
     public function getTeams()
     {
         return $this->teams;
+    }
+
+    /**
+     * Add matchs
+     *
+     * @param \UA\MatchBundle\Entity\Match\matchs $matchs
+     * @return game
+     */
+    public function addMatch(\UA\MatchBundle\Entity\Match\matchs $matchs)
+    {
+        $this->matchs[] = $matchs;
+    
+        return $this;
+    }
+
+    /**
+     * Remove matchs
+     *
+     * @param \UA\MatchBundle\Entity\Match\matchs $matchs
+     */
+    public function removeMatch(\UA\MatchBundle\Entity\Match\matchs $matchs)
+    {
+        $this->matchs->removeElement($matchs);
+    }
+
+    /**
+     * Get matchs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMatchs()
+    {
+        return $this->matchs;
     }
 }

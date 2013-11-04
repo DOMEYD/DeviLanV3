@@ -1,32 +1,31 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{'admin.match.hour.title'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{'admin.match.hour.title'|trans}}</small></h3>{% endblock %}
+
 
 {% block body %}
-	<article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.hour'|trans }}</li>
-		</ol>	
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.hour'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{'admin.match.hour.title'|trans}}</h2>
-
-		<form method="POST" {{form_enctype(form)}}>
-			<div class="row">
-				<div class="input-group col-lg-6">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					{{form_widget(form.horaire.date, {'attr' : {'class' : 'form-control'}})}}
-				</div>
-				<div class="input-group col-lg-6">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-					{{form_widget(form.horaire.time, {'attr' : {'class' : 'form-control'}})}}
-				</div>
+	<form method="POST" {{form_enctype(form)}}>
+		<div class="row">
+			<div class="input-group col-lg-6">
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				{{form_widget(form.horaire.date, {'attr' : {'class' : 'form-control'}})}}
 			</div>
-			{{form_errors(form.horaire)}}<br>
-			<input type="submit" class="btn btn-primary pull-right">
-			<div class="clearfix"></div>
-			{{form_rest(form)}}
-		</form>
-	</article>
+			<div class="input-group col-lg-6">
+				<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+				{{form_widget(form.horaire.time, {'attr' : {'class' : 'form-control'}})}}
+			</div>
+		</div>
+		{{form_errors(form.horaire)}}<br>
+		<input type="submit" class="btn btn-primary pull-right">
+		<div class="clearfix"></div>
+		{{form_rest(form)}}
+	</form>
 {% endblock %}

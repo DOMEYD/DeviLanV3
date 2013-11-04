@@ -1,33 +1,31 @@
 {% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
-{% block title %}{{ parent() }} - Génération des matchs - Sélection du jeux{% endblock %}
+{% block title %}{{ parent() }} - {{ 'admin.generate.select.title'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{ 'admin.generate.select.title'|trans }}</small></h3>{% endblock %}
 
 {% block body %}
-    <article class="col-lg-8 col-lg-offset-1">
-		<ol class="breadcrumb">
-			<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
-			<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
-			<li><a href="{{ path('UAMatchAdmin_Generate', {'etape': 0}) }}">{{ 'breadcrumb.matchGen'|trans }}</a></li>
-			<li class="active">{{ 'breadcrumb.selectGame'|trans }}</li>
-		</ol>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('UAblog_default') }}">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="{{ path('UAUser_admin') }}">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li><a href="{{ path('UAMatchAdmin_Generate', {'etape': 0}) }}">{{ 'breadcrumb.matchGen'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.selectGame'|trans }}</li>
+	</ol>
 
-		<h2 class="text-center">{{ 'admin.generate.select.title'|trans }}</h2>
-
-		<div id="GamesGestion">
-			{% for game in games if games %}
-				<p class="game">
-					<img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"><br>
-					<span class="gameName">{{game.name}}</span>
-					<span class="controlGame">
-						<a href="{{ path('UAMatchAdmin_Generate', {'etape' : 1, 'gameID' : game.id}) }}" class="valide">
-							<span class="glyphicon glyphicon-ok-sign"></span>
-						</a>
-					</span>
-				</p>
-			{% else %}
-				<div class="alert alert-danger">{{'admin.generate.select.alert'|trans}}</div>
-			{% endfor %}
-		</div>	
-	</article>
+	<div id="GamesGestion">
+		{% for game in games if games %}
+			<p class="game">
+				<img src="{{ asset('uploads/img/' ~ game.pictures) }}" alt="{{game.pictures}}"><br>
+				<span class="gameName">{{game.name}}</span>
+				<span class="controlGame">
+					<a href="{{ path('UAMatchAdmin_Generate', {'etape' : 1, 'gameID' : game.id}) }}" class="valide">
+						<span class="glyphicon glyphicon-ok-sign"></span>
+					</a>
+				</span>
+			</p>
+		{% else %}
+			<div class="alert alert-danger">{{'admin.generate.select.alert'|trans}}</div>
+		{% endfor %}
+	</div>
 	{{ parent() }}
 {% endblock %}
