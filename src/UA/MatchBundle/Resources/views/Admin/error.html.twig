@@ -11,7 +11,7 @@
 		<li class="active">{{ 'breadcrumb.error'|trans }}</li>
 	</ol>
 
-	<div class="alert alert-danger">{{ ('error.' ~ Error)|trans }}</div>
+	<div class="alert alert-danger">{{ (Error)|trans }}</div>
 	<a href="{{ app.request.server.get('HTTP_REFERER') }}" class="btn btn-default">
 		<span class="glyphicon glyphicon-chevron-left"></span>
 		{{ 'admin.error.AdminReturn'|trans }}

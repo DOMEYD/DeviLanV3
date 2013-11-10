@@ -107,8 +107,10 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
-	<script type="text/javascript" src="{{asset('js/dropdown.js')}}"></script>
-	<script type="text/javascript" src="{{asset('js/modal.js')}}"></script>
 	{{parent()}}
+	{% javascripts 
+				'js/dropdown.js'
+				'js/modal.js' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
 {% endblock %}

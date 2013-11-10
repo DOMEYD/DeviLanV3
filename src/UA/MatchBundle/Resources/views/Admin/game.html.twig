@@ -100,17 +100,6 @@
 	{{ parent() }}
 {% endblock %}
 
-{% block javascripts %}
-	<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
-	<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
-	<script type="text/javascript">
-	$(function() {
-		$('a').tooltip();
-	})(jquery);
-	</script>
-	{{parent()}}
-{% endblock %}
-
 {% block stylesheets %}
 	{{parent()}}
 	<style type="text/css">

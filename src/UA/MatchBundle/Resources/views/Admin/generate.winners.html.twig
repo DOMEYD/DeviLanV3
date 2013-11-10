@@ -1,0 +1,35 @@
+{% extends "UAMatchBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{'admin.generate.finalTitle'|trans}}{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{'admin.generate.finalTitle'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<ol class="breadcrumb">
+		<li><a href="UABlog_default">{{ 'breadcrumb.home'|trans }}</a></li>
+		<li><a href="UAUser_admin">{{ 'breadcrumb.admin'|trans }}</a></li>
+		<li class="active">{{ 'breadcrumb.generate'|trans }}</li>
+	</ol>
+	<div class="panel panel-default">
+		<div class="panel-heading">Panel heading</div>
+		<table class="table">
+			<tr>
+				<td>{{'admin.generate.winners.first'|trans}}</td>
+				<td>{{first.name}}</td>
+			</tr>
+			<tr>
+				<td>{{'admin.generate.winners.second'|trans}}</td>
+				<td>{{second.name}}</td>
+			</tr>
+			<tr>
+				<td>{{'admin.generate.winners.third'|trans}}</td>
+				<td>{{third.name}}</td>
+			</tr>
+		</table>
+	</div>
+	<a href="{{ path('UAUser_admin') }}" class="btn btn-default">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+		{{ 'admin.generate.AdminReturn'|trans }}
+	</a>
+	{{ parent() }}
+{% endblock %}

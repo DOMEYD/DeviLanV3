@@ -1,0 +1,16 @@
+{% extends "::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{ 'admin.title.users.group'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'admin.title.users.group'|trans}} <small>{{'admin.ban.title'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<div class="alert alert-danger">
+		{{'admin.ban.message'|trans({'%username%' : user.username})|raw}}
+		<form method="POST" class="text-right">
+			<button class="btn btn-default">Annuler</button>
+			<input type="submit" class="btn btn-danger">
+		</form>
+		<div class="clearfix"></div>
+	</div>
+{% endblock %}

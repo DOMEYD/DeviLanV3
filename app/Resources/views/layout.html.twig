@@ -79,6 +79,19 @@
 		</header>
 		<section>
 			<article>
+				{# Flash messages #}
+				{% for flashMessage in app.session.flashbag.get('success') %}
+					<div class="alert alert-success">
+						{{ flashMessage }}
+					</div>
+				{% endfor %}
+				{% for flashMessage in app.session.flashbag.get('danger') %}
+					<div class="alert alert-danger">
+						{{ flashMessage }}
+					</div>
+				{% endfor %}
+
+				{# body of the site#}
 				{% block body %}
 				{% endblock %}
 			</article>
@@ -108,12 +121,16 @@
 			{{ 'footer'|trans }}
 		</footer>
 		
-		<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
+		{# Block with all javascript #}
+		{% javascripts 
+					'js/jquery.min.js'
+					'js/tooltip.js' %}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}	
 		<script type="text/javascript">
-		$(function() {
-			$('a').tooltip();
-		})(jquery);
+			(function($) {
+				$('a').tooltip();
+			})(jQuery);
 		</script>
 		{% block javascripts %}
 		

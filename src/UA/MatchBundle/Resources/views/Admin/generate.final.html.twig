@@ -2,7 +2,7 @@
 {% set menuActive = 'admin' %}
 
 {% block title %}{{ parent() }} - {{'admin.generate.successTitle'|trans}}{% endblock %}
-{% block headerTitle %}<h3>{{'header.admin'}} <small>{{'admin.generate.successTitle'|trans}}</small></h3>{% endblock %}
+{% block headerTitle %}<h3>{{'header.admin'|trans}} <small>{{'admin.generate.successTitle'|trans}}</small></h3>{% endblock %}
 
 {% block body %}
 	<ol class="breadcrumb">

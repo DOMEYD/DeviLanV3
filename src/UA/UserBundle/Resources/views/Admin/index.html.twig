@@ -1,6 +1,8 @@
-{% extends "UABlogBundle::layout.html.twig" %}
+{% extends "UAUserBundle::layout.html.twig" %}
+{% set menuActive = 'admin' %}
 
-{% block title %}{{ parent() }} - Administration{% endblock %}
+{% block title %}{{ parent() }} - {{'admin.title.general'|trans}}{% endblock %}
+{% block headerTitle %}<h3> <small>{{'admin.title.general'|trans}}</small></h3>{% endblock %}
 
 {% block stylesheets %}
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}" />
@@ -8,37 +10,58 @@
 {% endblock %}
  
 {% block body %}
-	<article class="col-lg-8 col-lg-offset-1">
-		<div class="admin">
-			<h3>Blog</h3>
-			<ul>
-				<li><a href="{{ path('UAblog_ajouter') }}">
-					<img src="{{ asset('pictures/admin/ajouter.png') }}"><br><br>
-					Ajouter
-				</a></li>
-				<li><a href="{{ path('UAFAQ_add') }}">
-					<img src="{{ asset('pictures/admin/faq.png') }}"><br><br>
-					F.A.Q.
-				</a></li>
-			</ul>
-		</div>
-		<div class="admin">
-			<h3>Matchs</h3>
-			<ul>
-				<li><a href="{{ path('UAMatchAdmin_Game') }}">
-					<img src="{{ asset('pictures/admin/game.png') }}"><br><br>
-					Jeux
-				</a></li>
-				<li><a href="{{ path('UAMatchAdmin_Team') }}">
-					<img src="{{ asset('pictures/admin/team.png') }}"><br><br>
-					Team
-				</a></li>
-				<li><a href="{{ path('UAMatchAdmin_Generate') }}">
-					<img src="{{ asset('pictures/admin/generate.png') }}"><br>
-					Génération des matchs
-				</a></li>
-			</ul>
-		</div>
-	</article>
+	<div class="admin">
+		<h3>{{'admin.title.blog.group'|trans}}</h3>
+		<ul>
+			<li><a href="{{ path('UAblog_ajouter') }}">
+				<img src="{{ asset('pictures/admin/ajouter.png') }}"><br><br>
+				{{'admin.title.blog.add'|trans}}
+			</a></li>
+			<li><a href="{{ path('UAFAQ_add') }}">
+				<img src="{{ asset('pictures/admin/faq.png') }}"><br><br>
+				{{'admin.title.blog.faq'|trans}}
+			</a></li>
+		</ul>
+	</div>
+	<div class="admin">
+		<h3>{{'admin.title.matchs.group'|trans}}</h3>
+		<ul>
+			<li><a href="{{ path('UAMatchAdmin_Game') }}">
+				<img src="{{ asset('pictures/admin/game.png') }}"><br><br>
+				{{'admin.title.matchs.game'|trans}}
+			</a></li>
+			<li><a href="{{ path('UAMatchAdmin_Team') }}">
+				<img src="{{ asset('pictures/admin/team.png') }}"><br><br>
+				{{'admin.title.matchs.team'|trans}}
+			</a></li>
+			<li><a href="{{ path('UAMatchAdmin_Generate') }}">
+				<img src="{{ asset('pictures/admin/generate.png') }}"><br>
+				{{'admin.title.matchs.generate'|trans}}
+			</a></li>
+		</ul>
+	</div>
+	<div class="admin">
+		<h3>{{'admin.title.users.group'|trans}}</h3>
+		<ul>
+			<li><a href="{{path('UA_user_gestion')}}">
+				<img src="{{asset('pictures/admin/allusers.png')}}"><br><br>
+				{{'admin.title.users.all'|trans}}
+			</a></li>
+			<li><a href="{{path('UA_user_add')}}">
+				<img src="{{asset('pictures/admin/add.png')}}"><br><br>
+				{{'admin.title.users.add'|trans}}
+			</a></li>
+			{#
+			<li><a href="{{path('UA_user_grade')}}">
+				<img src="{{asset('pictures/admin/grades.png')}}"><br><br>
+				Grades
+			</a></li>
+			<li><a href="{{path('UA_user_ban')}}">
+				<img src="{{asset('pictures/admin/ban.png')}}"><br><br>
+				Bannir
+			</a></li>
+			#}
+		</ul>
+	</div>
     {{ parent() }}
 {% endblock %}

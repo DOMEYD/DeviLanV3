@@ -1,0 +1,23 @@
+{% extends "::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{ 'admin.title.users.group'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'admin.title.users.group'|trans}} <small>{{'admin.add.title'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<form method="POST" {{form_enctype(form)}} >
+		<label for="{{form.username.vars.id}}">{{'admin.add.username'|trans}}</label>
+		{{form_widget(form.username, {'attr' : {'class' : 'form-control', 'autocomplete' : 'off', 'placeholder' : 'admin.add.username'|trans}})}}
+
+		<label for="{{form.plainPassword.vars.id}}">{{'admin.add.password'|trans}}</label>
+		{{form_widget(form.plainPassword, {'attr' : {'class' : 'form-control', 'autocomplete' : 'off', 'placeholder' : 'admin.add.password'|trans}})}}
+
+
+		<label for="{{form.roles.vars.id}}">{{'admin.add.roles'|trans}}</label>
+		{{form_widget(form.roles, {'attr' : {'class' : 'form-control', 'size' : '5'}})}}
+
+		<br>
+		<input type="submit" class="btn btn-primary">
+		{{form_rest(form)}}
+	</form>
+{% endblock %}

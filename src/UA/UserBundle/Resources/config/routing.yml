@@ -1,3 +1,28 @@
+#ADMIN ACTIONS
+UA_user_grade:
+    pattern: /admin/grade/{id}
+    defaults: { _controller: UAUserBundle:Admin:grade}
+
+UA_user_ban:
+    pattern: /admin/ban/{id}
+    defaults: { _controller: UAUserBundle:Admin:ban}
+
+UA_user_gestion_user:
+    pattern:  /admin/gestion/{user}
+    defaults: { _controller: UAUserBundle:Admin:gestion, user: null }
+
+UA_user_gestion:
+    pattern:  /admin/gestion/{page}
+    defaults: { _controller: UAUserBundle:Admin:gestion, page: null }
+
+UA_user_add:
+    pattern: /admin/user/add
+    defaults: { _controller: UAUserBundle:Admin:add}
+
+UAUser_JSON:
+    path: /admin/user/json
+    defaults: { _controller: UAUserBundle:Admin:json }
+
 UAUser_admin:
     path:     /admin
     defaults: { _controller: UAUserBundle:Admin:index }

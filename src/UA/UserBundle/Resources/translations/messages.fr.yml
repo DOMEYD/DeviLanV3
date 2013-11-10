@@ -1,0 +1,49 @@
+# Position / path
+home : "Acceuil"
+admin : "Administration"
+add: "Ajouter"
+
+admin:
+    title:
+        general: "pannel de gestion"
+        blog: 
+            group: "Blog"
+            add: "Ajouter"
+            faq: "F.A.Q."
+        matchs:
+            group: "Matchs"
+            game: "Jeux"
+            team: "Equipes"
+            generate: "Génération des matchs"
+        users:
+            group: "Utilisateurs"
+            all: "Général"
+            add: "Ajouter"
+    gestion:
+        all:
+            title: "vue générale"
+            search: "Rechercher..."
+            status: "Status :"
+            actif: "Actif"
+            inactif: "Inactif"
+            ranking: "Grader"
+            ban: "Bannir"
+    grade:
+        title: "choix du grade"
+        admin: "Administrateur"
+        modo: "Modérateur"
+        referee: "Arbitre"
+        blog: "Bloggueur"
+        user: "Utilisateur"
+        helpMessage: "Appuyez sur Ctrl pour sélectionner plusieurs grade. (Utile uniquement sur les grades Bloggueur et Arbitre)"
+        grader: "Grader !"
+    add:
+        title: "ajouter un utilisateur"
+        username: "Nom d'utilisateur :"
+        password: "Mot de passe :"
+        roles: "Grade(s) :"
+        success: "L'utilisateur a bien été ajouté !"
+    ban:
+        title: "Bannir l'utilisateur"
+        message: "<strong>Attention !</strong> Vous êtes sur le point de supprimer %username% !"
+        success: "L'utilisateur a bien été banni !"

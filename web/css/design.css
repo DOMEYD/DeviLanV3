@@ -124,6 +124,7 @@ nav li.active {
 nav li:hover {
 	box-shadow: none;
 	-webkit-box-shadow:none;
+	border-right: 1px white solid;
 }
 nav li span {
 	font-size: 0;
@@ -137,7 +138,6 @@ nav li:hover span {
 nav li a {
 	display: block;
 	font-weight: bold;
-	font-size: 1.2em;
 	color: #ecf0f1;
 	padding: 5px 0;
 }

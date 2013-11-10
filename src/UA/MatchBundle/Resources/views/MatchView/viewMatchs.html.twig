@@ -60,10 +60,9 @@
 	{% for match in Tree %}
 		<!--Close-->
 		{% if match.step|split(';')[0] != stepBefore %}
-			{% if match.step|split(';')[0] != 1 %}
+			
 			</table>
 			</div>
-			{% endif %}
 
 			<div class="panel panel-default pull-left" style="margin-left: 5px;">
 				<div class="panel-heading">{{ match.step|split(';')[0] }}e</div>
@@ -107,7 +106,9 @@
 
 {% block javascripts %}
 	{{parent()}}
-	<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
-	<script type="text/javascript" src="{{asset('js/tooltip.js')}}"></script>
-	<script type="text/javascript" src="{{ asset('js/referee.js') }}"></script>
+	{% javascripts 
+				'js/tooltip.js'
+				'js/referee.js' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
 {% endblock %}

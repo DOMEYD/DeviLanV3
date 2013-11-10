@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{ 'admin.title.users.group'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'admin.title.users.group'|trans}} <small>{{'admin.grade.title'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<form {{ form_enctype(form) }} method="POST">
+		{{form_widget(form.roles, {'attr': {'class' : 'form-control', 'size' : '5'}})}}
+		<span class="help-block">{{'admin.grade.helpMessage'|trans}}</span>
+		<input type="submit" value="{{'admin.grade.grader'|trans}}" class="btn btn-primary pull-right">
+		<div class="clearfix"></div>
+		{{form_rest(form)}}
+	</form>
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/admin.css') }}">
+	{{parent()}}
+{% endblock %}

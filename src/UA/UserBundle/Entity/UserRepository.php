@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+	public function getUsernamesByRegex($where) {
+		$qb = $this ->createQueryBuilder('u');
+		$qb 		->where($qb->expr()->like('u.username', ':term'))
+					->setParameter('term', '%' . $where . '%');
+		return $qb->getQuery()->getResult();
+	}
 }

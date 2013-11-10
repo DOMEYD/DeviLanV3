@@ -1,8 +1,9 @@
 {% extends "UABlogBundle::layout.html.twig" %}
 {% trans_default_domain 'FOSUserBundle' %}
+
 {% block body %}
 	{% if error %}
-		<div class="alert alert-error">{{ error.message }}</div>
+		<div class="alert alert-error">{{ error.message|trans }}</div>
 	{% endif %}
 
 	<form action="{{ path('fos_user_security_check') }}" method="post" style="width:20%;margin:auto;">

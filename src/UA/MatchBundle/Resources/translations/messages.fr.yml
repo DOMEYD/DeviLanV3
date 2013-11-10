@@ -75,6 +75,12 @@ admin:
         nbrTeamAdvisable: "Le jeu &#171; %team% &#187; dispose de %n% équipes, nous vous conseillons donc <strong>%x% pools</strong>."
         noteTwice: "<strong>Note :</strong> Pour un bon fonctionnement de la gestion des matchs, il est recommandé que le nombre ci-dessus soit multiple de 2 !"
         success: "<div class=\"alert alert-success\">La génération des matchs pour le jeu <strong>%game%</strong> s'est effectué avec succès !</div>"
+        winners:
+            first: "1er"
+            second: "2ème"
+            third: "3ème"
+        successTitle: "les matchs ont été générés"
+        finalTitle: "résultat de la finale"
     score:
         title: "Mise à jour des scores"
     match:
@@ -87,14 +93,14 @@ admin:
 #team page
 team:
     title: "Voir les équipes"
-    game: "Selection"
+    game: "Sélection"
     table:
         name: "Nom de l'équipe :"
         gameName: "Jeux"
 
 #Match Page
 match:
-    selectionTitle: "Selection du jeux"
+    selectionTitle: "Sélection du jeux"
     title: "Voir les matchs"
     hour: "]-Inf,0[ Match déjà passé ... |{0} Match prévu aujourd'hui à %h%|{1} Match prévu demain à %h%|{2} Match prévu après-demain à %h%|]1,Inf[ Match prévu dans %count% jours à %h%"
     MatchReturn: "Retourner à la sélection du jeu"
@@ -106,10 +112,11 @@ error:
     MatchNotExisting: "Aucun match trouvé pour cet ID de jeu"
     ArbitrageMatchNotFound: "Le match demandé n'a pas été trouvé !"
     scoreCannotBeSame: "Les scores, hors matchs de pool, ne peuvent être égals..."
+    TwoTeamsNeeded: "Au moins 2 équipes doivent être présentent pour créer un match !"
+    NotExistingStep: "L'étape spécifiée en paramètre n'existe pas !"
+    UnexpectedError: "Une erreur innatendu s'est produite !"
 BlankPicture: "Une image doit être spécifiée !"
 gameSuccess: "Le jeux a bien été créé !"
-NotExistingStep: "L'étape spécifiée en paramètre n'existe pas !"
-UnexpectedError: "Une erreur innatendu s'est produite !"
 
 #Admin status
 yes: 'oui'

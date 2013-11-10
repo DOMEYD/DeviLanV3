@@ -1,0 +1,106 @@
+{% extends "::layout.html.twig" %}
+{% set menuActive = 'admin' %}
+
+{% block title %}{{ parent() }} - {{ 'admin.title.users.group'|trans }}{% endblock %}
+{% block headerTitle %}<h3>{{'admin.title.users.group'|trans}} <small>{{'admin.gestion.all.title'|trans}}</small></h3>{% endblock %}
+
+{% block body %}
+	<form>
+		<div class="input-group ui-widget">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+			<input id="searchUser" type="text" class="form-control" placeholder="{{'admin.gestion.all.search'|trans}}" autofocus>
+		</div>
+	</form>
+	<br>
+	{% for user in users|slice((page-1)*10, 10) %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{{ user.username }}
+				-
+				<strong>{{'admin.gestion.all.status'|trans}}</strong>
+				{% if user.enabled == 1 %}
+					<span style="color:#2ecc71">{{'admin.gestion.all.actif'|trans}}</span>
+				{% else %}
+					<span style="color:#e74c3c;">{{'admin.gestion.all.inactif'|trans}}</span>
+				{% endif %}
+			</div>
+			<div class="panel-body">
+				{{user.username}}
+				<div class="pull-right">
+					<a role="menuitem" href="{{path('UA_user_grade', {id:user.id})}}" class="btn btn-primary btn-sm">{{'admin.gestion.all.ranking'|trans}}</a>
+					<a role="menuitem" href="{{path('UA_user_ban', {id:user.id})}}" class="btn btn-danger btn-sm">{{'admin.gestion.all.ban'|trans}}</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	{% endfor %}
+	<hr>
+	<div class="text-center">
+		<ul class="pagination">
+			{% if page > 1 %}
+				<li><a href="{{ path('UA_user_gestion', {'page' : page-1}) }}">&laquo;</a></li>
+			{% else %}
+				<li class="disabled"><a href="#">&laquo;</a></li>
+			{% endif %}
+
+			{% for i in (page-2)..(page+2) %}
+				{% if i == page %}
+					<li class="active"><a href="#">{{i}}</a></li>
+				{% elseif i <= 0 or i > ((users|length)/10)|ceil %}
+
+				{% else %}
+					<li><a href="{{ path('UA_user_gestion', {'page' : i}) }}">{{i}}</a></li>				
+				{% endif %}
+			{% endfor %}
+
+
+			{% if page < ((users|length)/10)|ceil %}
+				<li><a href="{{ path('UA_user_gestion', {'page' : page+1}) }}">&raquo;</a></li>
+			{% else %}
+				<li class="disabled"><a href="#">&raquo;</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	{{parent()}}
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	{% javascripts 
+				'js/jquery-ui.min.js'
+				'js/dropdown.js' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+	$(function() {
+		var cache = {};
+		$( "#searchUser" ).autocomplete({
+			minLength: 2,
+			source: function( request, response ) {
+				var term = request.term;
+				if ( term in cache ) {
+					response( cache[ term ] );
+					return;
+				}
+				$.getJSON( "{{path('UAUser_JSON')}}", request, function( data, status, xhr ) {
+					cache[ term ] = data;
+					response( data );
+				});
+			},
+			select: function( event, ui ) {
+				window.location = "{{path('UA_user_gestion_user')}}/" + ui.item.value;
+			}
+		});
+	});
+	</script>
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<style>
+		.ui-autocomplete-loading {
+			background: white url('{{asset('pictures/ui-anim_basic_16x16.gif')}}') right center no-repeat;
+		}
+  </style>
+{% endblock %}
